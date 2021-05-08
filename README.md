@@ -12,9 +12,9 @@ Install the latest version [from pub](https://pub.dartlang.org/packages/flutter_
 
 ## Quick Start
 
-Import the package, create a `Sparkline`, and pass it your data.
+Import the package, create a `Sparkline` , and pass it your data.
 
-```dart
+``` dart
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 
@@ -40,7 +40,6 @@ void main() {
 
 ![base example screenshot](screenshots/example_base.png)
 
-
 ## Customization
 
 ### Sparkline
@@ -53,7 +52,7 @@ void main() {
 
 Example:
 
-```dart
+``` dart
 new Sparkline(
   data: data,
   lineWidth: 5.0,
@@ -63,7 +62,7 @@ new Sparkline(
 
 ![lineopts example screenshot](screenshots/example_lineopts.png)
 
-```dart
+``` dart
 new Sparkline(
   data: data,
   lineWidth: 10.0,
@@ -95,7 +94,7 @@ new Sparkline(
 
 Example:
 
-```dart
+``` dart
 new Sparkline(
   data: data,
   pointsMode: PointsMode.all,
@@ -106,7 +105,7 @@ new Sparkline(
 
 ![all points example screenshot](screenshots/example_points_all.png)
 
-```dart
+``` dart
 new Sparkline(
   data: data,
   pointsMode: PointsMode.last,
@@ -135,7 +134,7 @@ new Sparkline(
 
 Example:
 
-```dart
+``` dart
 new Sparkline(
   data: data,
   fillMode: FillMode.below,
@@ -145,7 +144,7 @@ new Sparkline(
 
 ![fill below example screenshot](screenshots/example_fill_below.png)
 
-```dart
+``` dart
 new Sparkline(
   data: data,
   fillMode: FillMode.above,
@@ -155,7 +154,7 @@ new Sparkline(
 
 ![fill above example screenshot](screenshots/example_fill_above.png)
 
-```dart
+``` dart
 new Sparkline(
   data: data,
   fillMode: FillMode.below,
@@ -169,26 +168,60 @@ new Sparkline(
 
 ![fill above example screenshot](screenshots/example_fill_gradient.png)
 
+### Smoothing
+
+``` dart
+new Sparkline(
+  data: data,
+  useCubicSmoothing: true,
+  cubicSmoothingFactor: 0.2,
+),
+```
+
+![cubic smoothing example screenshot](screenshots/example_cubic_smoothing.png)
+
+### Average Line
+
+``` dart
+new Sparkline(
+  data: data,
+  averageLine: true,
+),
+```
+
+![cubic smoothing example screenshot](screenshots/averageLine.png)
+
+### first, last, highest and the lowest 
+
+``` dart
+new Sparkline(
+  data: data,
+  kLine: ['max', 'min', 'first', 'last'],
+),
+```
+
+![cubic smoothing example screenshot](screenshots/high_low_first_last.png)
+
 ---
 
 ### Todo:
 
-- [x] simple sparkline
-- [x] custom line width
-- [x] custom line color 
-- [x] optional rounded corners
-- [x] fill
-- [x] embiggen individual points/change color
-- [x] different points modes [all/last/none]
-- [ ] animate between two sparklines
-- [ ] animate drawing a single sparkline
-- [ ] gesture detector to select closest point to tap
-- [ ] baseline
-- [x] different fill modes [above/below/none]
-- [x] fix edge points overflowing by offsetting by lineWidth
-- [ ] better corner rounding
-- [ ] axis labels
-- [x] gradient shader on line paint
-- [x] gradient shader on fill paint
-- [ ] multiple overlapping sparklines on a shared axis
-- [ ] tests
+* [x] simple sparkline
+* [x] custom line width
+* [x] custom line color 
+* [x] optional rounded corners
+* [x] fill
+* [x] embiggen individual points/change color
+* [x] different points modes [all/last/none]
+* [ ] animate between two sparklines
+* [ ] animate drawing a single sparkline
+* [ ] gesture detector to select closest point to tap
+* [ ] baseline
+* [x] different fill modes [above/below/none]
+* [x] fix edge points overflowing by offsetting by lineWidth
+* [x] better corner rounding
+* [ ] axis labels
+* [x] gradient shader on line paint
+* [x] gradient shader on fill paint
+* [ ] multiple overlapping sparklines on a shared axis
+* [ ] tests

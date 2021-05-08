@@ -1,3 +1,3 @@
-library flutter_sparkline;
+library chart_sparkline;
 
 export 'src/sparkline.dart';
