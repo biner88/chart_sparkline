@@ -1,6 +1,6 @@
-[![pub package](https://img.shields.io/pub/v/flutter_sparkline.svg)](https://pub.dartlang.org/packages/flutter_sparkline)
+[![pub package](https://img.shields.io/pub/v/chart_sparkline.svg)](https://pub.dev/packages/chart_sparkline)
 
-# flutter_sparkline
+# chart_sparkline
 
 Beautiful sparkline charts for Flutter.
 
@@ -8,7 +8,7 @@ Beautiful sparkline charts for Flutter.
 
 ## Installation
 
-Install the latest version [from pub](https://pub.dartlang.org/packages/flutter_sparkline#-installing-tab-).
+Install the latest version [from pub](https://pub.dev/packages/chart_sparkline#-installing-tab-).
 
 ## Quick Start
 
@@ -16,7 +16,7 @@ Import the package, create a `Sparkline` , and pass it your data.
 
 ``` dart
 import 'package:flutter/material.dart';
-import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:chart_sparkline/flutter_sparkline.dart';
 
 void main() {
   var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
