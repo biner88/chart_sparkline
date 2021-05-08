@@ -1,3 +1,7 @@
+## [1.0.1] - 2021-05-08
+
+* Allow data as can be empty
+
 ## [1.0.0] - 2021-05-08
 
 * Support nullsafety

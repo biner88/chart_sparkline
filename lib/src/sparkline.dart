@@ -64,7 +64,7 @@ class Sparkline extends StatelessWidget {
   Sparkline({
     Key? key,
     required this.data,
-    this.lineWidth = 2.0,
+    this.lineWidth = 1.0,
     this.lineColor = Colors.lightBlue,
     this.lineGradient,
     this.pointsMode = PointsMode.none,
@@ -301,7 +301,7 @@ class _SparklinePainter extends CustomPainter {
             ? min
             : (dataPoints.length > 0 ? dataPoints.reduce(math.min) : 0.0);
 
-  final List<double> dataPoints;
+  List<double> dataPoints;
 
   final double lineWidth;
   final Color lineColor;
@@ -362,13 +362,16 @@ class _SparklinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (dataPoints.length == 0) {
+      dataPoints = [0.0, 0.0];
+    }
+
     double width = size.width - lineWidth;
     final double height = size.height - lineWidth;
     final double heightNormalizer = (!enableThreshold)
-        ? height / ((_max - _min) == 0 ? 1 : (_max - _min)) - 1
+        ? height / ((_max - _min) == 0 ? 1 : (_max - _min))
         : (height - (height * thresholdSize)) /
-                ((_max - _min) == 0 ? 1 : (_max - _min)) -
-            1;
+            ((_max - _min) == 0 ? 1 : (_max - _min));
 
     final List<Offset> points = <Offset>[];
     final List<Offset> normalized = <Offset>[];
@@ -382,6 +385,10 @@ class _SparklinePainter extends CustomPainter {
     if (gridLineTextPainters.isEmpty) {
       update();
     }
+    // var paint2 = Paint()
+    //   ..style = PaintingStyle.fill
+    //   ..color = Colors.purple;
+    // canvas.drawRect(Offset.zero & size, paint2);
 
     if (enableGridLines) {
       width = size.width - gridLineTextPainters[0].size.width * 2;
@@ -500,6 +507,9 @@ class _SparklinePainter extends CustomPainter {
         canvas.drawPath(fillPath, fillPaint);
       }
     }
+
+    //
+
     /////////////////
     //average line
     if (averageLine) {
@@ -535,8 +545,8 @@ class _SparklinePainter extends CustomPainter {
           height / 2 + avgPaint.height / 2);
 
       var paint = Paint()
-        ..style = PaintingStyle.fill //填充
-        ..color = gridLineColor; //背景为纸黄色
+        ..style = PaintingStyle.fill
+        ..color = gridLineColor;
       canvas.drawRect(rect, paint);
       //
       avgPaint.paint(
