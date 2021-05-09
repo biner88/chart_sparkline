@@ -379,8 +379,8 @@ class _SparklinePainter extends CustomPainter {
     final Map spDataPoints = {
       'max': {'val': _max, 'offset': Offset(-1, -1)},
       'min': {'val': _min, 'offset': Offset(-1, -1)},
-      'first': {'val': dataPoints.first, 'offset': Offset.zero},
-      'last': {'val': dataPoints.last, 'offset': Offset.zero},
+      'first': {'val': dataPoints.first, 'offset': Offset(-1, -1)},
+      'last': {'val': dataPoints.last, 'offset': Offset(-1, -1)},
     };
     if (gridLineTextPainters.isEmpty) {
       update();
@@ -426,7 +426,7 @@ class _SparklinePainter extends CustomPainter {
       normalized.add(Offset(x, y));
 
       if (dataPoints[i] == spDataPoints['max']['val']) {
-        if (i != 0 && i != (dataPoints.length - 1)) {
+        if ((i != 0 && i != (dataPoints.length - 1))) {
           spDataPoints['max']['offset'] = normalized[i];
         }
       }
@@ -508,8 +508,6 @@ class _SparklinePainter extends CustomPainter {
       }
     }
 
-    //
-
     /////////////////
     //average line
     if (averageLine) {
@@ -521,9 +519,11 @@ class _SparklinePainter extends CustomPainter {
           text: TextSpan(
               text: gridLinelabelPrefix + averageValText,
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.bold)),
+                textBaseline: TextBaseline.alphabetic,
+                // height: 1.1,
+                color: Colors.white,
+                fontSize: 10.0,
+              )),
           textDirection: TextDirection.ltr);
       avgPaint.layout();
       //
@@ -538,16 +538,16 @@ class _SparklinePainter extends CustomPainter {
             Offset(dx, height / 2), Offset(dx, height / 2 + 1), paint1);
       }
       //
-      Rect rect = Rect.fromLTRB(
+      RRect rect = RRect.fromLTRBR(
           size.width - avgPaint.width - 10.0,
           height / 2 - avgPaint.height / 2,
           width,
-          height / 2 + avgPaint.height / 2);
-
+          height / 2 + avgPaint.height / 2,
+          Radius.circular(1.0));
       var paint = Paint()
         ..style = PaintingStyle.fill
         ..color = gridLineColor;
-      canvas.drawRect(rect, paint);
+      canvas.drawRRect(rect, paint);
       //
       avgPaint.paint(
           canvas, Offset(width - avgPaint.width - 5.0, height / 2 - 5.0));
@@ -578,18 +578,51 @@ class _SparklinePainter extends CustomPainter {
             spPainter.paint(canvas, spOffset);
             break;
           case 'max':
-            if ((spOffset.dx != -1 && spOffset.dy != -1) ||
-                kLine!.contains('element')) {
+            if ((spOffset != Offset(-1, -1))) {
               spOffset =
                   Offset(spOffset.dx - spPainter.width / 2, spOffset.dy + 6);
               spPainter.paint(canvas, spOffset);
+            } else {
+              if (!kLine!.contains('first')) {
+                if (spDataPoints['max']['val'] ==
+                    spDataPoints['first']['val']) {
+                  spOffset = spDataPoints['first']['offset'];
+                  spOffset = Offset(6.0, spOffset.dy - spPainter.height / 2);
+                  spPainter.paint(canvas, spOffset);
+                }
+              }
+              if (!kLine!.contains('last')) {
+                if (spDataPoints['max']['val'] == spDataPoints['last']['val']) {
+                  spOffset = spDataPoints['last']['offset'];
+                  spOffset = Offset(width - spPainter.width - 6,
+                      spOffset.dy - spPainter.height / 2);
+                  spPainter.paint(canvas, spOffset);
+                }
+              }
             }
             break;
           case 'min':
-            if (spOffset.dx != -1 && spOffset.dy != -1) {
+            if ((spOffset != Offset(-1, -1))) {
               spOffset =
                   Offset(spOffset.dx - spPainter.width / 2, spOffset.dy - 18);
               spPainter.paint(canvas, spOffset);
+            } else {
+              if (!kLine!.contains('first')) {
+                if (spDataPoints['min']['val'] ==
+                    spDataPoints['first']['val']) {
+                  spOffset = spDataPoints['first']['offset'];
+                  spOffset = Offset(6.0, spOffset.dy - spPainter.height / 2);
+                  spPainter.paint(canvas, spOffset);
+                }
+              }
+              if (!kLine!.contains('last')) {
+                if (spDataPoints['min']['val'] == spDataPoints['last']['val']) {
+                  spOffset = spDataPoints['last']['offset'];
+                  spOffset = Offset(width - spPainter.width - 6,
+                      spOffset.dy - spPainter.height / 2);
+                  spPainter.paint(canvas, spOffset);
+                }
+              }
             }
             break;
           default:

@@ -1,3 +1,8 @@
+## [1.0.2] - 2021-05-09
+
+* Average lable rounded
+* Optimization displayed when only max and min
+
 ## [1.0.1] - 2021-05-08
 
 * Allow data as can be empty
