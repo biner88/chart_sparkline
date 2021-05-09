@@ -1,6 +1,6 @@
 name: chart_sparkline
 description: Beautiful sparkline charts for Flutter.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/biner88/chart_sparkline
 publish_to: https://pub.dartlang.org
 dependencies:
