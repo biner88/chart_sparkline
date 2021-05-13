@@ -1,3 +1,7 @@
+## [1.0.3] - 2021-05-09
+
+* Add average lable set
+
 ## [1.0.2] - 2021-05-09
 
 * Average lable rounded

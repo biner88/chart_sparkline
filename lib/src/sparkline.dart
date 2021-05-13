@@ -91,6 +91,7 @@ class Sparkline extends StatelessWidget {
     this.gridLinelabelPrefix = "",
     this.gridLineLabelPrecision = 3,
     this.averageLine = false,
+    this.averageLable = true,
     this.kLine,
   }) : super(key: key);
 
@@ -226,6 +227,9 @@ class Sparkline extends StatelessWidget {
 
   ///average Line
   final bool averageLine;
+
+  ///average Lable
+  final bool averageLable;
   @override
   Widget build(BuildContext context) {
     return LimitedBox(
@@ -259,6 +263,7 @@ class Sparkline extends StatelessWidget {
           max: max,
           min: min,
           averageLine: averageLine,
+          averageLable: averageLable,
           kLine: kLine,
         ),
       ),
@@ -294,6 +299,7 @@ class _SparklinePainter extends CustomPainter {
     double? min,
     this.averageLine = false,
     this.kLine,
+    this.averageLable = true,
   })  : _max = max != null
             ? max
             : (dataPoints.length > 0 ? dataPoints.reduce(math.max) : 0.0),
@@ -333,6 +339,7 @@ class _SparklinePainter extends CustomPainter {
   final String gridLinelabelPrefix;
   final int gridLineLabelPrecision;
   final bool averageLine;
+  final bool averageLable;
   final List? kLine;
   List<TextPainter> gridLineTextPainters = [];
 
@@ -364,6 +371,9 @@ class _SparklinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (dataPoints.length == 0) {
       dataPoints = [0.0, 0.0];
+    }
+    if (dataPoints.length == 1) {
+      dataPoints = [dataPoints[0], dataPoints[0]];
     }
 
     double width = size.width - lineWidth;
@@ -511,21 +521,6 @@ class _SparklinePainter extends CustomPainter {
     /////////////////
     //average line
     if (averageLine) {
-      var averageVal = dataPoints.reduce((a, b) => a + b) / dataPoints.length;
-      String averageValText =
-          averageVal.toStringAsPrecision(gridLineLabelPrecision);
-      var avgPaint = TextPainter(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-              text: gridLinelabelPrefix + averageValText,
-              style: TextStyle(
-                textBaseline: TextBaseline.alphabetic,
-                // height: 1.1,
-                color: Colors.white,
-                fontSize: 10.0,
-              )),
-          textDirection: TextDirection.ltr);
-      avgPaint.layout();
       //
       var paint1 = Paint()
         ..style = PaintingStyle.stroke
@@ -537,20 +532,37 @@ class _SparklinePainter extends CustomPainter {
         canvas.drawLine(
             Offset(dx, height / 2), Offset(dx, height / 2 + 1), paint1);
       }
-      //
-      RRect rect = RRect.fromLTRBR(
-          size.width - avgPaint.width - 10.0,
-          height / 2 - avgPaint.height / 2,
-          width,
-          height / 2 + avgPaint.height / 2,
-          Radius.circular(1.0));
-      var paint = Paint()
-        ..style = PaintingStyle.fill
-        ..color = gridLineColor;
-      canvas.drawRRect(rect, paint);
-      //
-      avgPaint.paint(
-          canvas, Offset(width - avgPaint.width - 5.0, height / 2 - 5.0));
+      if (averageLable) {
+        var averageVal = dataPoints.reduce((a, b) => a + b) / dataPoints.length;
+        String averageValText =
+            averageVal.toStringAsPrecision(gridLineLabelPrecision);
+        var avgPaint = TextPainter(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: gridLinelabelPrefix + averageValText,
+              style: TextStyle(
+                textBaseline: TextBaseline.alphabetic,
+                // height: 1.1,
+                color: Colors.white,
+                fontSize: 10.0,
+              ),
+            ),
+            textDirection: TextDirection.ltr);
+        avgPaint.layout();
+        RRect rect = RRect.fromLTRBR(
+            size.width - avgPaint.width - 10.0,
+            height / 2 - avgPaint.height / 2,
+            width,
+            height / 2 + avgPaint.height / 2,
+            Radius.circular(1.0));
+        var paint = Paint()
+          ..style = PaintingStyle.fill
+          ..color = gridLineColor;
+        canvas.drawRRect(rect, paint);
+        //
+        avgPaint.paint(
+            canvas, Offset(width - avgPaint.width - 5.0, height / 2 - 5.0));
+      }
     }
     if (kLine != null && kLine!.length > 0) {
       for (var item in kLine!) {
@@ -665,6 +677,7 @@ class _SparklinePainter extends CustomPainter {
         gridLinelabelPrefix != old.gridLinelabelPrefix ||
         gridLineLabelPrecision != old.gridLineLabelPrecision ||
         averageLine != old.averageLine ||
+        averageLable != old.averageLable ||
         kLine != old.kLine ||
         useCubicSmoothing != old.useCubicSmoothing;
   }
