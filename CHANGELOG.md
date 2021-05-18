@@ -1,4 +1,8 @@
-## [1.0.4] - 2021-05-18
+## [1.0.5] - 2021-05-18
+
+* Fix bug
+
+## [1.0.4] - 2021-05-17
 
 * Update example
 * Add backgroudColor

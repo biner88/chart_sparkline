@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chart_sparkline/flutter_sparkline.dart';
+import 'package:chart_sparkline/chart_sparkline.dart';
 
 void main() {
   runApp(
@@ -11,7 +11,7 @@ void main() {
             height: 250.0,
             child: Sparkline(
               data: [-1.5, 1 - 0, 2 - 5, -1.5, 2, 5, -2.3],
-              // backgroudColor: Colors.red,
+              // backgroundColor: Colors.red,
               // lineColor: Colors.lightGreen[500]!,
               // fillMode: FillMode.below,
               // fillColor: Colors.lightGreen[200]!,

@@ -93,7 +93,7 @@ class Sparkline extends StatelessWidget {
     this.averageLine = false,
     this.averageLable = true,
     this.kLine,
-    this.backgroudColor,
+    this.backgroundColor,
   }) : super(key: key);
 
   /// List of values to be represented by the sparkline.
@@ -233,7 +233,7 @@ class Sparkline extends StatelessWidget {
   final bool averageLable;
 
   ///backgroudColor
-  final Color? backgroudColor;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +270,7 @@ class Sparkline extends StatelessWidget {
           averageLine: averageLine,
           averageLable: averageLable,
           kLine: kLine,
-          backgroudColor: backgroudColor,
+          backgroundColor: backgroundColor,
         ),
       ),
     );
@@ -306,7 +306,7 @@ class _SparklinePainter extends CustomPainter {
     this.averageLine = false,
     this.kLine,
     this.averageLable = true,
-    this.backgroudColor,
+    this.backgroundColor,
   })  : _max = max != null
             ? max
             : (dataPoints.length > 0 ? dataPoints.reduce(math.max) : 0.0),
@@ -348,7 +348,7 @@ class _SparklinePainter extends CustomPainter {
   final bool averageLine;
   final bool averageLable;
   final List? kLine;
-  final Color? backgroudColor;
+  final Color? backgroundColor;
 
   List<TextPainter> gridLineTextPainters = [];
 
@@ -405,10 +405,10 @@ class _SparklinePainter extends CustomPainter {
       update();
     }
 
-    if (backgroudColor != null) {
+    if (backgroundColor != null) {
       var paintBgcolor = Paint()
         ..style = PaintingStyle.fill
-        ..color = Colors.purple;
+        ..color = backgroundColor!;
       canvas.drawRect(Offset.zero & size, paintBgcolor);
     }
 
@@ -705,7 +705,7 @@ class _SparklinePainter extends CustomPainter {
         averageLine != old.averageLine ||
         averageLable != old.averageLable ||
         kLine != old.kLine ||
-        backgroudColor != old.backgroudColor ||
+        backgroundColor != old.backgroundColor ||
         useCubicSmoothing != old.useCubicSmoothing;
   }
 }
