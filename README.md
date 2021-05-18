@@ -21,13 +21,13 @@ import 'package:chart_sparkline/flutter_sparkline.dart';
 void main() {
   var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
   runApp(
-    new MaterialApp(
-      home: new Scaffold(
-        body: new Center(
-          child: new Container(
+    MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Container(
             width: 300.0,
             height: 100.0,
-            child: new Sparkline(
+            child: Sparkline(
               data: data,
             ),
           ),
@@ -53,7 +53,7 @@ void main() {
 Example:
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   lineWidth: 5.0,
   lineColor: Colors.purple,
@@ -63,10 +63,10 @@ new Sparkline(
 ![lineopts example screenshot](screenshots/example_lineopts.png)
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   lineWidth: 10.0,
-  lineGradient: new LinearGradient(
+  lineGradient: LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [Colors.purple[800], Colors.purple[200]],
@@ -95,7 +95,7 @@ new Sparkline(
 Example:
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   pointsMode: PointsMode.all,
   pointSize: 8.0,
@@ -106,7 +106,7 @@ new Sparkline(
 ![all points example screenshot](screenshots/example_points_all.png)
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   pointsMode: PointsMode.last,
   pointSize: 8.0,
@@ -135,7 +135,7 @@ new Sparkline(
 Example:
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   fillMode: FillMode.below,
   fillColor: Colors.red[200],
@@ -145,7 +145,7 @@ new Sparkline(
 ![fill below example screenshot](screenshots/example_fill_below.png)
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   fillMode: FillMode.above,
   fillColor: Colors.red[200],
@@ -155,10 +155,10 @@ new Sparkline(
 ![fill above example screenshot](screenshots/example_fill_above.png)
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   fillMode: FillMode.below,
-  fillGradient: new LinearGradient(
+  fillGradient: LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [Colors.red[800], Colors.red[200]],
@@ -171,7 +171,7 @@ new Sparkline(
 ### Smoothing
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   useCubicSmoothing: true,
   cubicSmoothingFactor: 0.2,
@@ -183,9 +183,10 @@ new Sparkline(
 ### Average Line
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   averageLine: true,
+  averageLable: true,
 ),
 ```
 
@@ -194,13 +195,25 @@ new Sparkline(
 ### first, last, highest and the lowest 
 
 ``` dart
-new Sparkline(
+Sparkline(
   data: data,
   kLine: ['max', 'min', 'first', 'last'],
 ),
 ```
 
 ![cubic smoothing example screenshot](screenshots/high_low_first_last.png)
+
+### gridLine
+
+``` dart
+Sparkline(
+  gridLinelabelPrefix: '\$',
+  gridLineLabelPrecision: 3,
+  enableGridLines: true,
+),
+```
+
+![cubic smoothing example screenshot](screenshots/gridLine.png)
 
 ---
 
@@ -220,7 +233,7 @@ new Sparkline(
 * [x] different fill modes [above/below/none]
 * [x] fix edge points overflowing by offsetting by lineWidth
 * [x] better corner rounding
-* [ ] axis labels
+* [x] axis labels
 * [x] gradient shader on line paint
 * [x] gradient shader on fill paint
 * [ ] multiple overlapping sparklines on a shared axis

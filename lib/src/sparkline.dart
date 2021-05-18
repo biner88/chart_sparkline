@@ -93,6 +93,7 @@ class Sparkline extends StatelessWidget {
     this.averageLine = false,
     this.averageLable = true,
     this.kLine,
+    this.backgroudColor,
   }) : super(key: key);
 
   /// List of values to be represented by the sparkline.
@@ -230,6 +231,10 @@ class Sparkline extends StatelessWidget {
 
   ///average Lable
   final bool averageLable;
+
+  ///backgroudColor
+  final Color? backgroudColor;
+
   @override
   Widget build(BuildContext context) {
     return LimitedBox(
@@ -265,6 +270,7 @@ class Sparkline extends StatelessWidget {
           averageLine: averageLine,
           averageLable: averageLable,
           kLine: kLine,
+          backgroudColor: backgroudColor,
         ),
       ),
     );
@@ -300,6 +306,7 @@ class _SparklinePainter extends CustomPainter {
     this.averageLine = false,
     this.kLine,
     this.averageLable = true,
+    this.backgroudColor,
   })  : _max = max != null
             ? max
             : (dataPoints.length > 0 ? dataPoints.reduce(math.max) : 0.0),
@@ -341,6 +348,8 @@ class _SparklinePainter extends CustomPainter {
   final bool averageLine;
   final bool averageLable;
   final List? kLine;
+  final Color? backgroudColor;
+
   List<TextPainter> gridLineTextPainters = [];
 
   update() {
@@ -395,10 +404,13 @@ class _SparklinePainter extends CustomPainter {
     if (gridLineTextPainters.isEmpty) {
       update();
     }
-    // var paint2 = Paint()
-    //   ..style = PaintingStyle.fill
-    //   ..color = Colors.purple;
-    // canvas.drawRect(Offset.zero & size, paint2);
+
+    if (backgroudColor != null) {
+      var paintBgcolor = Paint()
+        ..style = PaintingStyle.fill
+        ..color = Colors.purple;
+      canvas.drawRect(Offset.zero & size, paintBgcolor);
+    }
 
     if (enableGridLines) {
       width = size.width - gridLineTextPainters[0].size.width * 2;
@@ -459,6 +471,19 @@ class _SparklinePainter extends CustomPainter {
     final Path path = Path();
     path.moveTo(startPoint.dx, startPoint.dy);
 
+    ///xlable
+    // for (int i = 0; i < dataPoints.length; i++) {
+    //   var spPainter = TextPainter(
+    //       text: TextSpan(
+    //           text: '${dataPoints[i]}',
+    //           style: TextStyle(
+    //               color: gridLineColor,
+    //               fontSize: 10.0,
+    //               fontWeight: FontWeight.bold)),
+    //       textDirection: TextDirection.ltr);
+    //   spPainter.layout();
+    //   spPainter.paint(canvas, normalized[i]);
+    // }
     if (useCubicSmoothing) {
       Offset a = normalized[0];
       Offset b = normalized[0];
@@ -564,6 +589,7 @@ class _SparklinePainter extends CustomPainter {
             canvas, Offset(width - avgPaint.width - 5.0, height / 2 - 5.0));
       }
     }
+
     if (kLine != null && kLine!.length > 0) {
       for (var item in kLine!) {
         var val = spDataPoints[item]['val'];
@@ -679,6 +705,7 @@ class _SparklinePainter extends CustomPainter {
         averageLine != old.averageLine ||
         averageLable != old.averageLable ||
         kLine != old.kLine ||
+        backgroudColor != old.backgroudColor ||
         useCubicSmoothing != old.useCubicSmoothing;
   }
 }

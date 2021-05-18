@@ -12,3 +12,5 @@ ios/Flutter/Generated.xcconfig
 ios/Runner/GeneratedPluginRegistrant.*
 
 .history/
+/example/build
+/example/pubspec.lock

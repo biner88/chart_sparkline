@@ -1,3 +1,8 @@
+## [1.0.4] - 2021-05-18
+
+* Update example
+* Add backgroudColor
+
 ## [1.0.3] - 2021-05-09
 
 * Add average lable set
