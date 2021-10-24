@@ -16,7 +16,7 @@ Import the package, create a `Sparkline` , and pass it your data.
 
 ``` dart
 import 'package:flutter/material.dart';
-import 'package:chart_sparkline/flutter_sparkline.dart';
+import 'package:chart_sparkline/chart_sparkline.dart';
 
 void main() {
   var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
