@@ -1,3 +1,7 @@
+## [1.0.6] - 2021-10-29
+
+* Fix documentation.  [@2n-1](https://github.com/biner88/chart_sparkline/pull/1)
+
 ## [1.0.5] - 2021-05-18
 
 * Fix bug
