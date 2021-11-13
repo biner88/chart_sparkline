@@ -539,8 +539,8 @@ class _SparklinePainter extends CustomPainter {
       if (fillGradient != null) {
         final Rect fillRect = Rect.fromLTWH(0.0, 0.0, width, height);
         fillPaint.shader = fillGradient!.createShader(fillRect);
-        canvas.drawPath(fillPath, fillPaint);
       }
+      canvas.drawPath(fillPath, fillPaint);
     }
 
     /////////////////
