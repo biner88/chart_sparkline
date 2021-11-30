@@ -91,7 +91,7 @@ class Sparkline extends StatelessWidget {
     this.gridLinelabelPrefix = "",
     this.gridLineLabelPrecision = 3,
     this.averageLine = false,
-    this.averageLable = true,
+    this.averageLabel = true,
     this.kLine,
     this.backgroundColor,
   }) : super(key: key);
@@ -229,8 +229,8 @@ class Sparkline extends StatelessWidget {
   ///average Line
   final bool averageLine;
 
-  ///average Lable
-  final bool averageLable;
+  ///average Label
+  final bool averageLabel;
 
   ///backgroudColor
   final Color? backgroundColor;
@@ -268,7 +268,7 @@ class Sparkline extends StatelessWidget {
           max: max,
           min: min,
           averageLine: averageLine,
-          averageLable: averageLable,
+          averageLabel: averageLabel,
           kLine: kLine,
           backgroundColor: backgroundColor,
         ),
@@ -305,7 +305,7 @@ class _SparklinePainter extends CustomPainter {
     double? min,
     this.averageLine = false,
     this.kLine,
-    this.averageLable = true,
+    this.averageLabel = true,
     this.backgroundColor,
   })  : _max = max != null
             ? max
@@ -346,7 +346,7 @@ class _SparklinePainter extends CustomPainter {
   final String gridLinelabelPrefix;
   final int gridLineLabelPrecision;
   final bool averageLine;
-  final bool averageLable;
+  final bool averageLabel;
   final List? kLine;
   final Color? backgroundColor;
 
@@ -557,7 +557,7 @@ class _SparklinePainter extends CustomPainter {
         canvas.drawLine(
             Offset(dx, height / 2), Offset(dx, height / 2 + 1), paint1);
       }
-      if (averageLable) {
+      if (averageLabel) {
         var averageVal = dataPoints.reduce((a, b) => a + b) / dataPoints.length;
         String averageValText =
             averageVal.toStringAsPrecision(gridLineLabelPrecision);
@@ -703,7 +703,7 @@ class _SparklinePainter extends CustomPainter {
         gridLinelabelPrefix != old.gridLinelabelPrefix ||
         gridLineLabelPrecision != old.gridLineLabelPrecision ||
         averageLine != old.averageLine ||
-        averageLable != old.averageLable ||
+        averageLabel != old.averageLabel ||
         kLine != old.kLine ||
         backgroundColor != old.backgroundColor ||
         useCubicSmoothing != old.useCubicSmoothing;
