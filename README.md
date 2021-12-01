@@ -186,7 +186,7 @@ Sparkline(
 Sparkline(
   data: data,
   averageLine: true,
-  averageLable: true,
+  averageLabel: true,
 ),
 ```
 
