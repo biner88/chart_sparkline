@@ -1,26 +1,18 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Dart
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push]
 
 jobs:
-  android:
+  build:
+
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+
+    container:
+      image:  google/dart:latest
+
     steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v2
-      - name: "Install Flutter"
-        run: ./.github/workflows/scripts/install-flutter.sh stable
-      - name: "Install Tools"
-        run: ./.github/workflows/scripts/install-tools.sh
-      - name: "Build Example"
-        run: ./.github/workflows/scripts/build-examples.sh android ./lib/main.dart
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: pub get
+    - name: Generate files
+      run: pub run build_runner build -v --delete-conflicting-outputs
+    - name: Run tests
+      run: pub run test
