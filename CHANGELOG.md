@@ -1,3 +1,7 @@
+## [1.0.8] - 2021-12-1
+
+* Fix label typo. [@michalsrutek](https://github.com/biner88/chart_sparkline/pull/3)
+
 ## [1.0.7] - 2021-11-13
 
 * Fix fillMode Bug. [@Gagan5278](https://github.com/biner88/chart_sparkline/issues/2)
