@@ -109,7 +109,7 @@ class Sparkline extends StatelessWidget {
 
   /// The width of the sparkline.
   ///
-  /// Defaults to 2.0.
+  /// Defaults to 1.0.
   final double lineWidth;
 
   /// The color of the sparkline.
