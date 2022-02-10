@@ -8,13 +8,13 @@ Beautiful sparkline charts for Flutter.
 
 ## Installation
 
-Install the latest version [from pub](https://pub.dev/packages/chart_sparkline#-installing-tab-).
+Install the latest version [from pub](https://pub.dev/packages/chart_sparkline/install).
 
 ## Quick Start
 
 Import the package, create a `Sparkline` , and pass it your data.
 
-``` dart
+```dart
 import 'package:flutter/material.dart';
 import 'package:chart_sparkline/chart_sparkline.dart';
 
@@ -52,7 +52,7 @@ void main() {
 
 Example:
 
-``` dart
+```dart
 Sparkline(
   data: data,
   lineWidth: 5.0,
@@ -62,7 +62,7 @@ Sparkline(
 
 ![lineopts example screenshot](screenshots/example_lineopts.png)
 
-``` dart
+```dart
 Sparkline(
   data: data,
   lineWidth: 10.0,
@@ -94,7 +94,7 @@ Sparkline(
 
 Example:
 
-``` dart
+```dart
 Sparkline(
   data: data,
   pointsMode: PointsMode.all,
@@ -105,7 +105,7 @@ Sparkline(
 
 ![all points example screenshot](screenshots/example_points_all.png)
 
-``` dart
+```dart
 Sparkline(
   data: data,
   pointsMode: PointsMode.last,
@@ -134,7 +134,7 @@ Sparkline(
 
 Example:
 
-``` dart
+```dart
 Sparkline(
   data: data,
   fillMode: FillMode.below,
@@ -144,7 +144,7 @@ Sparkline(
 
 ![fill below example screenshot](screenshots/example_fill_below.png)
 
-``` dart
+```dart
 Sparkline(
   data: data,
   fillMode: FillMode.above,
@@ -154,7 +154,7 @@ Sparkline(
 
 ![fill above example screenshot](screenshots/example_fill_above.png)
 
-``` dart
+```dart
 Sparkline(
   data: data,
   fillMode: FillMode.below,
@@ -170,7 +170,7 @@ Sparkline(
 
 ### Smoothing
 
-``` dart
+```dart
 Sparkline(
   data: data,
   useCubicSmoothing: true,
@@ -182,7 +182,7 @@ Sparkline(
 
 ### Average Line
 
-``` dart
+```dart
 Sparkline(
   data: data,
   averageLine: true,
@@ -194,7 +194,7 @@ Sparkline(
 
 ### first, last, highest and the lowest 
 
-``` dart
+```dart
 Sparkline(
   data: data,
   kLine: ['max', 'min', 'first', 'last'],
@@ -205,7 +205,7 @@ Sparkline(
 
 ### gridLine
 
-``` dart
+```dart
 Sparkline(
   gridLinelabelPrefix: '\$',
   gridLineLabelPrecision: 3,

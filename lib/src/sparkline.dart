@@ -1,9 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui show PointMode;
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 /// Strategy used when filling the area of a sparkline.
 enum FillMode {
   /// Do not fill, draw only the sparkline.
