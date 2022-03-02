@@ -26,6 +26,9 @@ enum PointsMode {
 
   /// Draw only the last point in the data set.
   last,
+
+  /// Draw a point at a given index in the data set.
+  atIndex,
 }
 
 /// A widget that draws a sparkline chart.
@@ -66,6 +69,7 @@ class Sparkline extends StatelessWidget {
     this.lineColor = Colors.lightBlue,
     this.lineGradient,
     this.pointsMode = PointsMode.none,
+    this.pointIndex,
     this.pointSize = 4.0,
     this.pointColor = const Color(0xFF0277BD), //Colors.lightBlue[800]
     this.sharpCorners = false,
@@ -126,6 +130,11 @@ class Sparkline extends StatelessWidget {
   ///
   /// Defaults to [PointsMode.none].
   final PointsMode pointsMode;
+
+  /// The index to draw a point at when pointsMode is atIndex.
+  ///
+  /// This is ignored if pointsMode is not atIndex.
+  final int? pointIndex;
 
   /// The size to use when drawing individual data points over the sparkline.
   ///
@@ -259,6 +268,7 @@ class Sparkline extends StatelessWidget {
           fillColor: fillColor,
           fillGradient: fillGradient,
           pointsMode: pointsMode,
+          pointIndex: pointIndex,
           pointSize: pointSize,
           pointColor: pointColor,
           enableGridLines: enableGridLines,
@@ -294,6 +304,7 @@ class _SparklinePainter extends CustomPainter {
     required this.fillColor,
     required this.fillGradient,
     required this.pointsMode,
+    required this.pointIndex,
     required this.pointSize,
     required this.pointColor,
     required this.enableGridLines,
@@ -334,6 +345,7 @@ class _SparklinePainter extends CustomPainter {
   final Gradient? fillGradient;
 
   final PointsMode pointsMode;
+  final int? pointIndex;
   final double pointSize;
   final Color pointColor;
 
@@ -465,7 +477,8 @@ class _SparklinePainter extends CustomPainter {
       }
 
       if (pointsMode == PointsMode.all ||
-          (pointsMode == PointsMode.last && i == dataPoints.length - 1)) {
+          (pointsMode == PointsMode.last && i == dataPoints.length - 1) || 
+          (pointsMode == PointsMode.atIndex && i == pointIndex)) {
         points.add(normalized[i]);
       }
     }
@@ -697,6 +710,7 @@ class _SparklinePainter extends CustomPainter {
         fillColor != old.fillColor ||
         fillGradient != old.fillGradient ||
         pointsMode != old.pointsMode ||
+        pointIndex != old.pointIndex ||
         pointSize != old.pointSize ||
         pointColor != old.pointColor ||
         enableGridLines != old.enableGridLines ||
