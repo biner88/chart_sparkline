@@ -477,7 +477,7 @@ class _SparklinePainter extends CustomPainter {
       }
 
       if (pointsMode == PointsMode.all ||
-          (pointsMode == PointsMode.last && i == dataPoints.length - 1) || 
+          (pointsMode == PointsMode.last && i == dataPoints.length - 1) ||
           (pointsMode == PointsMode.atIndex && i == pointIndex)) {
         points.add(normalized[i]);
       }
