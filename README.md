@@ -85,12 +85,14 @@ Sparkline(
 | pointsMode | PointsMode.none       |
 | pointSize  | 4.0                   |
 | pointColor | Colors.lightBlue[800] |
+| pointIndex | null                  |
 
-| PointsMode     | Description                               |
-|:--------------:|-------------------------------------------|
-| none (default) | Do not draw individual points.            |
-| all            | Draw all the points in the data set.      |
-| last           | Draw only the last point in the data set. |
+| PointsMode     | Description                                          |
+|:--------------:|------------------------------------------------------|
+| none (default) | Do not draw individual points.                       |
+| all            | Draw all the points in the data set.                 |
+| last           | Draw only the last point in the data set.            |
+| atIndex        | Draw one point at the index specified by pointIndex. |
 
 Example:
 
@@ -115,6 +117,17 @@ Sparkline(
 ```
 
 ![last point example screenshot](screenshots/example_points_last.png)
+
+```dart
+Sparkline(
+  data: data,
+  pointsMode: PointsMode.atIndex,
+  pointIndex: 7,
+  pointSize: 8.0,
+  pointColor: Colors.amber,
+);
+```
+
 
 ---
 
