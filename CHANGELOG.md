@@ -1,3 +1,7 @@
+## [1.0.11] - 2022-05-21
+
+* Fix bug.
+
 ## [1.0.10] - 2022-03-04
 
 * Add PointsMode atIndex [@claude](https://github.com/biner88/chart_sparkline/pull/7)
