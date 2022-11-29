@@ -81,6 +81,7 @@ class Sparkline extends StatelessWidget {
     this.fallbackHeight = 100.0,
     this.fallbackWidth = 300.0,
     this.enableGridLines = false,
+    this.gridLinelabel,
     this.gridLineColor = Colors.grey,
     this.gridLineAmount = 5,
     this.gridLineWidth = 0.5,
@@ -199,6 +200,10 @@ class Sparkline extends StatelessWidget {
   /// Enable or disable grid lines
   final bool enableGridLines;
 
+  /// Grid line labels callback
+  /// Takes the grid line Value and returns a string
+  final String Function(double gridLineValue)? gridLinelabel;
+
   /// Color of grid lines and label text
   final Color gridLineColor;
   final Color gridLineLabelColor;
@@ -265,6 +270,7 @@ class Sparkline extends StatelessWidget {
           pointSize: pointSize,
           pointColor: pointColor,
           enableGridLines: enableGridLines,
+          gridLinelabel: gridLinelabel,
           gridLineColor: gridLineColor,
           gridLineAmount: gridLineAmount,
           gridLineLabelColor: gridLineLabelColor,
@@ -310,6 +316,7 @@ class _SparklinePainter extends CustomPainter {
     required this.thresholdSize,
     this.gridLinelabelPrefix = '',
     this.gridLineLabelPrecision = 3,
+    this.gridLinelabel,
     double? max,
     double? min,
     this.averageLine = false,
@@ -349,6 +356,7 @@ class _SparklinePainter extends CustomPainter {
   final double _min;
 
   final bool enableGridLines;
+  final String Function(double gridLineValue)? gridLinelabel;
   final Color gridLineColor;
   final int gridLineAmount;
   final double gridLineWidth;
@@ -370,6 +378,8 @@ class _SparklinePainter extends CustomPainter {
         gridLineValue = _max - (((_max - _min) / (gridLineAmount - 1)) * i);
 
         String gridLineText =
+            gridLinelabel != null ? 
+            gridLinelabel!(gridLineValue) : 
             gridLineValue.toStringAsPrecision(gridLineLabelPrecision);
 
         gridLineTextPainters.add(TextPainter(
