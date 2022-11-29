@@ -1,3 +1,8 @@
+## [1.0.12] - 2022-11-29
+
+* Add gridLinelabel callback
+This callback allows to change grid line labels, it takes the grid line value and returns a string
+
 ## [1.0.11] - 2022-05-21
 
 * Fix bug.
