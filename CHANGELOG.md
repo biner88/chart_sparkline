@@ -1,3 +1,9 @@
+## [1.0.13] - 2023-2-8
+
+* Fixed [@cranst0n](https://github.com/biner88/chart_sparkline/issues/14)
+* Add pub screenshots
+* Add pub issue_tracker
+
 ## [1.0.12] - 2022-11-29
 
 * Add gridLinelabel callback

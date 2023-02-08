@@ -377,10 +377,9 @@ class _SparklinePainter extends CustomPainter {
         // Label grid lines
         gridLineValue = _max - (((_max - _min) / (gridLineAmount - 1)) * i);
 
-        String gridLineText =
-            gridLinelabel != null ? 
-            gridLinelabel!(gridLineValue) : 
-            gridLineValue.toStringAsPrecision(gridLineLabelPrecision);
+        String gridLineText = gridLinelabel != null
+            ? gridLinelabel!(gridLineValue)
+            : gridLineValue.toStringAsPrecision(gridLineLabelPrecision);
 
         gridLineTextPainters.add(TextPainter(
             text: TextSpan(
@@ -433,7 +432,7 @@ class _SparklinePainter extends CustomPainter {
     }
 
     if (enableGridLines) {
-      width = size.width - gridLineTextPainters[0].size.width * 2;
+      width = size.width - gridLineTextPainters[0].size.width;
       Paint gridPaint = Paint()
         ..color = gridLineColor
         ..strokeWidth = gridLineWidth;
