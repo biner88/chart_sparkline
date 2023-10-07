@@ -1,6 +1,6 @@
 name: chart_sparkline
 description: Beautiful sparkline charts for Flutter.Average line, highest and lowest value.
-version: 1.0.13
+version: 1.0.14
 homepage: https://github.com/biner88/chart_sparkline
 issue_tracker: https://github.com/biner88/chart_sparkline/issues
 screenshots:
@@ -19,4 +19,4 @@ dev_dependencies:
     sdk: flutter
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.12.0 <4.0.0'

@@ -1,3 +1,7 @@
+## [1.0.14] - 2023-10-7
+
+* Upgrade flutter SDK 4.0.0
+
 ## [1.0.13] - 2023-2-8
 
 * Fixed [@cranst0n](https://github.com/biner88/chart_sparkline/issues/14)
