@@ -13,37 +13,50 @@ void main() {
 }
 
 class _Configs {
+  final List<double> data;
   final bool averageLabel;
   final bool averageLine;
   final Color? backgroundColor;
   final Color lineColor;
   final FillMode fillMode;
   final Color fillColor;
+  final PointsMode pointsMode;
+  final int pointIndex;
 
   const _Configs({
+    required this.data,
     required this.averageLabel,
     required this.averageLine,
     required this.backgroundColor,
     required this.lineColor,
     required this.fillMode,
     required this.fillColor,
+    required this.pointsMode,
+    required this.pointIndex,
   });
 
   _Configs copyWith({
+    List<double>? data,
     bool? averageLabel,
     bool? averageLine,
     Color? backgroundColor,
     Color? lineColor,
     FillMode? fillMode,
     Color? fillColor,
+    PointsMode? pointsMode,
+    int? pointIndex,
   }) {
     return _Configs(
-        averageLabel: averageLabel ?? this.averageLabel,
-        averageLine: averageLine ?? this.averageLine,
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        lineColor: lineColor ?? this.lineColor,
-        fillMode: fillMode ?? this.fillMode,
-        fillColor: fillColor ?? this.fillColor);
+      data: data ?? this.data,
+      averageLabel: averageLabel ?? this.averageLabel,
+      averageLine: averageLine ?? this.averageLine,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      lineColor: lineColor ?? this.lineColor,
+      fillMode: fillMode ?? this.fillMode,
+      fillColor: fillColor ?? this.fillColor,
+      pointsMode: pointsMode ?? this.pointsMode,
+      pointIndex: pointIndex ?? this.pointIndex,
+    );
   }
 }
 
@@ -132,7 +145,7 @@ class _ConfigsWidget extends StatelessWidget {
         ),
         Row(
           children: [
-            Container(child: Text('FillMode')),
+            Container(child: Text('fillMode')),
             ...FillMode.values.map(
               (fillMode) {
                 return Row(
@@ -166,6 +179,56 @@ class _ConfigsWidget extends StatelessWidget {
             ),
           ),
         ),
+        Row(
+          children: [
+            Container(child: Text('pointsMode')),
+            ...PointsMode.values.map(
+              (pointsMode) {
+                return Row(
+                  children: [
+                    Radio<PointsMode>(
+                      value: pointsMode,
+                      groupValue: configs.pointsMode,
+                      onChanged: (value) {
+                        onChanged(
+                          (configs) => configs.copyWith(
+                            pointsMode: value,
+                          ),
+                        );
+                      },
+                    ),
+                    Text(
+                      pointsMode.name,
+                    ),
+                  ],
+                );
+              },
+            ).toList(),
+          ],
+        ),
+        if (configs.pointsMode == PointsMode.atIndex)
+          Row(
+            children: [
+              Text('pointIndex'),
+              SizedBox(
+                width: 200,
+                child: Slider(
+                  label: configs.pointIndex.toString(),
+                  divisions: configs.data.length - 1,
+                  value: configs.pointIndex + .0,
+                  min: 0,
+                  max: configs.data.length - 1,
+                  onChanged: (value) {
+                    onChanged(
+                      (configs) => configs.copyWith(
+                        pointIndex: value.toInt(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
       ],
     );
   }
@@ -256,12 +319,15 @@ class _Body extends StatefulWidget {
 
 class _BodyState extends State<_Body> {
   var _configs = const _Configs(
+    data: [-1.5, 1 - 0, 2 - 5, -1.5, 2, 5, -2.3],
     averageLabel: false,
     averageLine: false,
     backgroundColor: null,
     lineColor: Colors.lightBlue,
     fillMode: FillMode.none,
     fillColor: const Color(0xFF81D4FA),
+    pointsMode: PointsMode.none,
+    pointIndex: 0,
   );
 
   @override
@@ -311,14 +377,15 @@ class _Graph extends StatelessWidget {
       width: 600.0,
       height: 250.0,
       child: Sparkline(
-        data: [-1.5, 1 - 0, 2 - 5, -1.5, 2, 5, -2.3],
+        data: _configs.data,
         averageLine: _configs.averageLine,
         averageLabel: _configs.averageLabel,
         backgroundColor: _configs.backgroundColor,
         lineColor: _configs.lineColor,
         fillMode: _configs.fillMode,
         fillColor: _configs.fillColor,
-        // pointsMode: PointsMode.all,
+        pointsMode: _configs.pointsMode,
+        pointIndex: _configs.pointIndex,
         // pointSize: 5.0,
         // pointColor: Colors.amber,
         // useCubicSmoothing: true,
