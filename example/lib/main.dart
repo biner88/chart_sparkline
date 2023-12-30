@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chart_sparkline/chart_sparkline.dart';
+import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 
 void main() {
   runApp(
@@ -9,6 +10,135 @@ void main() {
       ),
     ),
   );
+}
+
+class _Configs {
+  final bool averageLabel;
+  final bool averageLine;
+  final Color backgroundColor;
+
+  const _Configs({
+    required this.averageLabel,
+    required this.averageLine,
+    required this.backgroundColor,
+  });
+
+  _Configs copyWith({
+    bool? averageLabel,
+    bool? averageLine,
+    Color? backgroundColor,
+  }) {
+    return _Configs(
+      averageLabel: averageLabel ?? this.averageLabel,
+      averageLine: averageLine ?? this.averageLine,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+    );
+  }
+}
+
+class _ConfigsWidget extends StatelessWidget {
+  final _Configs configs;
+  final void Function(_Configs Function(_Configs)) onChanged;
+  const _ConfigsWidget({
+    Key? key,
+    required this.configs,
+    required this.onChanged,
+  }) : super(key: key);
+
+  void _toggleAverageLabel() {
+    onChanged(
+      (configs) => configs.copyWith(
+        averageLabel: !configs.averageLabel,
+      ),
+    );
+
+    if (configs.averageLabel && !configs.averageLine) {
+      onChanged(
+        (configs) => configs.copyWith(
+          averageLine: true,
+        ),
+      );
+    }
+  }
+
+  void _toggleAverageLine() {
+    onChanged(
+      (configs) => configs.copyWith(
+        averageLine: !configs.averageLine,
+      ),
+    );
+
+    if (!configs.averageLine) {
+      onChanged(
+        (configs) => configs.copyWith(averageLabel: false),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Row(
+          children: [
+            Text('averageLabel'),
+            Switch(
+              value: configs.averageLabel,
+              onChanged: (value) {
+                _toggleAverageLabel();
+              },
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text('averageLine'),
+            Switch(
+              value: configs.averageLine,
+              onChanged: (value) {
+                _toggleAverageLine();
+              },
+            ),
+          ],
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final pickerWidget = SizedBox(
+              width: 600,
+              child: ColorPicker(
+                onChanged: (val) {
+                  onChanged(
+                    (configs) => configs.copyWith(
+                      backgroundColor: val,
+                    ),
+                  );
+                },
+              ),
+            );
+
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Pick background color'),
+                  content: pickerWidget,
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Text('Pick background color'),
+        ),
+      ],
+    );
+  }
 }
 
 class _Body extends StatefulWidget {
@@ -21,97 +151,90 @@ class _Body extends StatefulWidget {
 }
 
 class _BodyState extends State<_Body> {
-  bool averageLabel = false;
-  void _toggleAverageLabel() {
-    setState(() {
-      averageLabel = !averageLabel;
-
-      // averageLine has to be on for averageLabel to work
-      if (averageLabel && !averageLine) {
-        averageLine = true;
-      }
-    });
-  }
-
-  bool averageLine = false;
-  void _toggleAverageLine() {
-    setState(() {
-      averageLine = !averageLine;
-
-      // averageLine has to be on for averageLabel to work
-      if (!averageLine) {
-        averageLabel = false;
-      }
-    });
-  }
+  var _configs = const _Configs(
+    averageLabel: false,
+    averageLine: false,
+    backgroundColor: Colors.white,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        Row(
-          children: [
-            Text('averageLabel'),
-            Switch(
-              value: averageLabel,
-              onChanged: (value) {
-                _toggleAverageLabel();
-              },
-            ),
-            Text('averageLine'),
-            Switch(
-              value: averageLine,
-              onChanged: (value) {
-                _toggleAverageLine();
-              },
-            ),
-          ],
-        ),
-        Container(
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
-              left: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
-              right: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
-              bottom: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
-            ),
+        Expanded(
+          child: _ConfigsWidget(
+            configs: _configs,
+            onChanged: (value) {
+              setState(() {
+                _configs = value(_configs);
+              });
+            },
           ),
-          width: 600.0,
-          height: 250.0,
-          child: Sparkline(
-            data: [-1.5, 1 - 0, 2 - 5, -1.5, 2, 5, -2.3],
-            averageLine: averageLine,
-            averageLabel: averageLabel,
-            // backgroundColor: Colors.red,
-            // lineColor: Colors.lightGreen[500]!,
-            // fillMode: FillMode.below,
-            // fillColor: Colors.lightGreen[200]!,
-            // pointsMode: PointsMode.all,
-            // pointSize: 5.0,
-            // pointColor: Colors.amber,
-            // useCubicSmoothing: true,
-            // lineWidth: 1.0,
-            // gridLinelabelPrefix: '\$',
-            // gridLineLabelPrecision: 3,
-            // enableGridLines: true,
-            // kLine: ['max', 'min', 'first', 'last'],
-            // // max: 50.5,
-            // // min: 10.0,
-            // enableThreshold: true,
-            // thresholdSize: 0.1,
-            // lineGradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [Colors.purple[800]!, Colors.purple[200]!],
-            // ),
-            // fillGradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [Colors.red[800]!, Colors.red[200]!],
-            // ),
+        ),
+        Expanded(
+          child: _Graph(
+            configs: _configs,
           ),
         ),
       ],
+    );
+  }
+}
+
+class _Graph extends StatelessWidget {
+  const _Graph({
+    Key? key,
+    required _Configs configs,
+  })  : _configs = configs,
+        super(key: key);
+
+  final _Configs _configs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
+          left: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
+          right: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
+          bottom: BorderSide(width: 1.0, color: Color(0xFFFF000000)),
+        ),
+      ),
+      width: 600.0,
+      height: 250.0,
+      child: Sparkline(
+        data: [-1.5, 1 - 0, 2 - 5, -1.5, 2, 5, -2.3],
+        averageLine: _configs.averageLine,
+        averageLabel: _configs.averageLabel,
+        backgroundColor: _configs.backgroundColor,
+        // lineColor: Colors.lightGreen[500]!,
+        // fillMode: FillMode.below,
+        // fillColor: Colors.lightGreen[200]!,
+        // pointsMode: PointsMode.all,
+        // pointSize: 5.0,
+        // pointColor: Colors.amber,
+        // useCubicSmoothing: true,
+        // lineWidth: 1.0,
+        // gridLinelabelPrefix: '\$',
+        // gridLineLabelPrecision: 3,
+        // enableGridLines: true,
+        // kLine: ['max', 'min', 'first', 'last'],
+        // // max: 50.5,
+        // // min: 10.0,
+        // enableThreshold: true,
+        // thresholdSize: 0.1,
+        // lineGradient: LinearGradient(
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        //   colors: [Colors.purple[800]!, Colors.purple[200]!],
+        // ),
+        // fillGradient: LinearGradient(
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        //   colors: [Colors.red[800]!, Colors.red[200]!],
+        // ),
+      ),
     );
   }
 }
