@@ -170,15 +170,16 @@ class _ConfigsWidget extends StatelessWidget {
             ).toList(),
           ],
         ),
-        _PickColorButton(
-          title: 'Pick fill color',
-          color: configs.fillColor,
-          onChanged: (newColor) => onChanged(
-            (configs) => configs.copyWith(
-              fillColor: newColor,
+        if (configs.fillMode != FillMode.none)
+          _PickColorButton(
+            title: 'Pick fill color',
+            color: configs.fillColor,
+            onChanged: (newColor) => onChanged(
+              (configs) => configs.copyWith(
+                fillColor: newColor,
+              ),
             ),
           ),
-        ),
         Row(
           children: [
             Container(child: Text('pointsMode')),
@@ -386,6 +387,7 @@ class _Graph extends StatelessWidget {
         fillColor: _configs.fillColor,
         pointsMode: _configs.pointsMode,
         pointIndex: _configs.pointIndex,
+
         // pointSize: 5.0,
         // pointColor: Colors.amber,
         // useCubicSmoothing: true,
