@@ -22,6 +22,8 @@ class _Configs {
   final Color fillColor;
   final PointsMode pointsMode;
   final int pointIndex;
+  final double pointSize;
+  final Color pointColor;
 
   const _Configs({
     required this.data,
@@ -33,6 +35,8 @@ class _Configs {
     required this.fillColor,
     required this.pointsMode,
     required this.pointIndex,
+    required this.pointSize,
+    required this.pointColor,
   });
 
   _Configs copyWith({
@@ -45,6 +49,8 @@ class _Configs {
     Color? fillColor,
     PointsMode? pointsMode,
     int? pointIndex,
+    double? pointSize,
+    Color? pointColor,
   }) {
     return _Configs(
       data: data ?? this.data,
@@ -56,6 +62,8 @@ class _Configs {
       fillColor: fillColor ?? this.fillColor,
       pointsMode: pointsMode ?? this.pointsMode,
       pointIndex: pointIndex ?? this.pointIndex,
+      pointSize: pointSize ?? this.pointSize,
+      pointColor: pointColor ?? this.pointColor,
     );
   }
 }
@@ -230,6 +238,39 @@ class _ConfigsWidget extends StatelessWidget {
               ),
             ],
           ),
+        if (configs.pointsMode != PointsMode.none) ...[
+          Row(
+            children: [
+              Text('pointSize'),
+              SizedBox(
+                width: 200,
+                child: Slider(
+                  label: configs.pointSize.toString(),
+                  divisions: 100,
+                  value: configs.pointSize + .0,
+                  min: 0,
+                  max: 100,
+                  onChanged: (value) {
+                    onChanged(
+                      (configs) => configs.copyWith(
+                        pointSize: value,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          _PickColorButton(
+            title: 'Pick point color',
+            color: configs.pointColor,
+            onChanged: (newColor) => onChanged(
+              (configs) => configs.copyWith(
+                pointColor: newColor,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -329,6 +370,8 @@ class _BodyState extends State<_Body> {
     fillColor: const Color(0xFF81D4FA),
     pointsMode: PointsMode.none,
     pointIndex: 0,
+    pointSize: 4.0,
+    pointColor: const Color(0xFF0277BD),
   );
 
   @override
@@ -388,8 +431,8 @@ class _Graph extends StatelessWidget {
         pointsMode: _configs.pointsMode,
         pointIndex: _configs.pointIndex,
 
-        // pointSize: 5.0,
-        // pointColor: Colors.amber,
+        pointSize: _configs.pointSize,
+        pointColor: _configs.pointColor,
         // useCubicSmoothing: true,
         // lineWidth: 1.0,
         // gridLinelabelPrefix: '\$',
