@@ -17,12 +17,14 @@ class _Configs {
   final bool averageLine;
   final Color? backgroundColor;
   final Color lineColor;
+  final FillMode fillMode;
 
   const _Configs({
     required this.averageLabel,
     required this.averageLine,
     required this.backgroundColor,
     required this.lineColor,
+    required this.fillMode,
   });
 
   _Configs copyWith({
@@ -30,12 +32,14 @@ class _Configs {
     bool? averageLine,
     Color? backgroundColor,
     Color? lineColor,
+    FillMode? fillMode,
   }) {
     return _Configs(
       averageLabel: averageLabel ?? this.averageLabel,
       averageLine: averageLine ?? this.averageLine,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       lineColor: lineColor ?? this.lineColor,
+      fillMode: fillMode ?? this.fillMode,
     );
   }
 }
@@ -121,6 +125,34 @@ class _ConfigsWidget extends StatelessWidget {
             ),
           ),
         ),
+        // three radios for FillMode.None, FillMode.below and FillMode.above
+        Row(
+          children: [
+            Container(child: Text('FillMode')),
+            ...FillMode.values.map(
+              (fillMode) {
+                return Row(
+                  children: [
+                    Radio<FillMode>(
+                      value: fillMode,
+                      groupValue: configs.fillMode,
+                      onChanged: (value) {
+                        onChanged(
+                          (configs) => configs.copyWith(
+                            fillMode: value,
+                          ),
+                        );
+                      },
+                    ),
+                    Text(
+                      fillMode.name,
+                    ),
+                  ],
+                );
+              },
+            ).toList(),
+          ],
+        ),
       ],
     );
   }
@@ -185,6 +217,7 @@ class _BodyState extends State<_Body> {
     averageLine: false,
     backgroundColor: null,
     lineColor: Colors.lightBlue,
+    fillMode: FillMode.none,
   );
 
   @override
@@ -239,7 +272,7 @@ class _Graph extends StatelessWidget {
         averageLabel: _configs.averageLabel,
         backgroundColor: _configs.backgroundColor,
         lineColor: _configs.lineColor,
-        // fillMode: FillMode.below,
+        fillMode: _configs.fillMode,
         // fillColor: Colors.lightGreen[200]!,
         // pointsMode: PointsMode.all,
         // pointSize: 5.0,
