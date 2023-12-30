@@ -114,6 +114,7 @@ class _ConfigsWidget extends StatelessWidget {
         ),
         _PickColorButton(
           title: 'Pick background color',
+          color: configs.backgroundColor,
           onChanged: (newColor) => onChanged(
             (configs) => configs.copyWith(
               backgroundColor: newColor,
@@ -122,6 +123,7 @@ class _ConfigsWidget extends StatelessWidget {
         ),
         _PickColorButton(
           title: 'Pick line color',
+          color: configs.lineColor,
           onChanged: (newColor) => onChanged(
             (configs) => configs.copyWith(
               lineColor: newColor,
@@ -157,6 +159,7 @@ class _ConfigsWidget extends StatelessWidget {
         ),
         _PickColorButton(
           title: 'Pick fill color',
+          color: configs.fillColor,
           onChanged: (newColor) => onChanged(
             (configs) => configs.copyWith(
               fillColor: newColor,
@@ -172,42 +175,72 @@ class _PickColorButton extends StatelessWidget {
   const _PickColorButton({
     Key? key,
     required this.title,
+    required this.color,
     required this.onChanged,
   }) : super(key: key);
 
   final String title;
+  final Color? color;
   final void Function(Color) onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        final pickerWidget = SizedBox(
-          width: 600,
-          child: ColorPicker(
-            onChanged: onChanged,
-          ),
-        );
+    final onPressed = () {
+      final pickerWidget = SizedBox(
+        width: 600,
+        child: ColorPicker(
+          color: color ?? Colors.white,
+          onChanged: onChanged,
+        ),
+      );
 
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Pick background color'),
-              content: pickerWidget,
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-      child: Text(title),
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Pick background color'),
+            content: pickerWidget,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    };
+
+    return Row(
+      children: [
+        ElevatedButton(
+          onPressed: onPressed,
+          child: Text(title),
+        ),
+        InkWell(
+          onTap: onPressed,
+          child: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: color,
+              border: Border.all(
+                // if color is bright, use black as border color
+                // if color is dark, use white as border color
+                color: color == null
+                    ? Colors.white
+                    : color!.computeLuminance() > 0.5
+                        ? Colors.black
+                        : Colors.white,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
