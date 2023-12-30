@@ -95,6 +95,8 @@ class Sparkline extends StatelessWidget {
     this.gridLineLabelPrecision = 3,
     this.averageLine = false,
     this.averageLabel = true,
+    this.maxLine = false,
+    this.maxLabel = true,
     this.kLine,
     this.backgroundColor,
   }) : super(key: key);
@@ -244,6 +246,12 @@ class Sparkline extends StatelessWidget {
   ///average Label
   final bool averageLabel;
 
+  ///max Line
+  final bool maxLine;
+
+  ///max Label
+  final bool maxLabel;
+
   ///backgroudColor
   final Color? backgroundColor;
 
@@ -282,9 +290,11 @@ class Sparkline extends StatelessWidget {
           max: max,
           min: min,
           averageLine: averageLine,
+          maxLine: maxLine,
           kLine: kLine,
           backgroundColor: backgroundColor,
           averageLabel: averageLabel,
+          maxLabel: maxLabel,
         ),
       ),
     );
@@ -320,8 +330,10 @@ class _SparklinePainter extends CustomPainter {
     double? max,
     double? min,
     this.averageLine = false,
+    this.maxLine = false,
     this.kLine,
     this.averageLabel = true,
+    this.maxLabel = true,
     this.backgroundColor,
   })  : _max = max != null
             ? max
@@ -365,6 +377,8 @@ class _SparklinePainter extends CustomPainter {
   final int gridLineLabelPrecision;
   final bool averageLine;
   final bool averageLabel;
+  final bool maxLine;
+  final bool maxLabel;
   final List? kLine;
   final Color? backgroundColor;
 
@@ -610,6 +624,61 @@ class _SparklinePainter extends CustomPainter {
       }
     }
 
+    /////////////////
+    //max line
+
+    // the line will be positioned on the point of the biggest value
+    // so we will not take the
+    final maxVal = dataPoints.reduce(math.max);
+    final maxDy = height - (maxVal - _min) * heightNormalizer + lineWidth / 2;
+
+    if (maxLine) {
+      //
+      var paint1 = Paint()
+        ..style = PaintingStyle.stroke
+        ..color = gridLineLabelColor
+        ..strokeWidth = 2.0;
+
+      for (int i = 0; i <= (width / 6.0); ++i) {
+        double dx = 6.0 * i;
+        canvas.drawLine(
+          Offset(dx, maxDy),
+          Offset(dx, maxDy + 1),
+          paint1,
+        );
+      }
+      if (maxLabel) {
+        String maxValText = maxVal.toStringAsPrecision(gridLineLabelPrecision);
+        var maxPaint = TextPainter(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: gridLinelabelPrefix + maxValText,
+              style: TextStyle(
+                textBaseline: TextBaseline.alphabetic,
+                // height: 1.1,
+                color: Colors.white,
+                fontSize: 10.0,
+              ),
+            ),
+            textDirection: TextDirection.ltr);
+        maxPaint.layout();
+        final hgh = maxDy;
+        RRect rect = RRect.fromLTRBR(
+            size.width - maxPaint.width - 10.0,
+            hgh - maxPaint.height / 2,
+            width,
+            hgh + maxPaint.height / 2,
+            Radius.circular(1.0));
+        var paint = Paint()
+          ..style = PaintingStyle.fill
+          ..color = gridLineColor;
+        canvas.drawRRect(rect, paint);
+        //
+        maxPaint.paint(
+            canvas, Offset(width - maxPaint.width - 5.0, maxDy - 5.0));
+      }
+    }
+
     if (kLine != null && kLine!.length > 0) {
       for (var item in kLine!) {
         var val = spDataPoints[item]['val'];
@@ -725,6 +794,8 @@ class _SparklinePainter extends CustomPainter {
         gridLineLabelPrecision != old.gridLineLabelPrecision ||
         averageLine != old.averageLine ||
         averageLabel != old.averageLabel ||
+        maxLine != old.maxLine ||
+        maxLabel != old.maxLabel ||
         kLine != old.kLine ||
         backgroundColor != old.backgroundColor ||
         useCubicSmoothing != old.useCubicSmoothing;
