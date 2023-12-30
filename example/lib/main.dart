@@ -15,23 +15,27 @@ void main() {
 class _Configs {
   final bool averageLabel;
   final bool averageLine;
-  final Color backgroundColor;
+  final Color? backgroundColor;
+  final Color lineColor;
 
   const _Configs({
     required this.averageLabel,
     required this.averageLine,
     required this.backgroundColor,
+    required this.lineColor,
   });
 
   _Configs copyWith({
     bool? averageLabel,
     bool? averageLine,
     Color? backgroundColor,
+    Color? lineColor,
   }) {
     return _Configs(
       averageLabel: averageLabel ?? this.averageLabel,
       averageLine: averageLine ?? this.averageLine,
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      lineColor: lineColor ?? this.lineColor,
     );
   }
 }
@@ -101,42 +105,67 @@ class _ConfigsWidget extends StatelessWidget {
             ),
           ],
         ),
-        ElevatedButton(
-          onPressed: () {
-            final pickerWidget = SizedBox(
-              width: 600,
-              child: ColorPicker(
-                onChanged: (val) {
-                  onChanged(
-                    (configs) => configs.copyWith(
-                      backgroundColor: val,
-                    ),
-                  );
-                },
-              ),
-            );
-
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Pick background color'),
-                  content: pickerWidget,
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: Text('Pick background color'),
+        _PickColorButton(
+          title: 'Pick background color',
+          onChanged: (newColor) => onChanged(
+            (configs) => configs.copyWith(
+              backgroundColor: newColor,
+            ),
+          ),
+        ),
+        _PickColorButton(
+          title: 'Pick line color',
+          onChanged: (newColor) => onChanged(
+            (configs) => configs.copyWith(
+              lineColor: newColor,
+            ),
+          ),
         ),
       ],
+    );
+  }
+}
+
+class _PickColorButton extends StatelessWidget {
+  const _PickColorButton({
+    Key? key,
+    required this.title,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final String title;
+  final void Function(Color) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        final pickerWidget = SizedBox(
+          width: 600,
+          child: ColorPicker(
+            onChanged: onChanged,
+          ),
+        );
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Pick background color'),
+              content: pickerWidget,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Text(title),
     );
   }
 }
@@ -154,7 +183,8 @@ class _BodyState extends State<_Body> {
   var _configs = const _Configs(
     averageLabel: false,
     averageLine: false,
-    backgroundColor: Colors.white,
+    backgroundColor: null,
+    lineColor: Colors.lightBlue,
   );
 
   @override
@@ -208,7 +238,7 @@ class _Graph extends StatelessWidget {
         averageLine: _configs.averageLine,
         averageLabel: _configs.averageLabel,
         backgroundColor: _configs.backgroundColor,
-        // lineColor: Colors.lightGreen[500]!,
+        lineColor: _configs.lineColor,
         // fillMode: FillMode.below,
         // fillColor: Colors.lightGreen[200]!,
         // pointsMode: PointsMode.all,
