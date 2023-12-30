@@ -18,6 +18,7 @@ class _Configs {
   final Color? backgroundColor;
   final Color lineColor;
   final FillMode fillMode;
+  final Color fillColor;
 
   const _Configs({
     required this.averageLabel,
@@ -25,6 +26,7 @@ class _Configs {
     required this.backgroundColor,
     required this.lineColor,
     required this.fillMode,
+    required this.fillColor,
   });
 
   _Configs copyWith({
@@ -33,14 +35,15 @@ class _Configs {
     Color? backgroundColor,
     Color? lineColor,
     FillMode? fillMode,
+    Color? fillColor,
   }) {
     return _Configs(
-      averageLabel: averageLabel ?? this.averageLabel,
-      averageLine: averageLine ?? this.averageLine,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      lineColor: lineColor ?? this.lineColor,
-      fillMode: fillMode ?? this.fillMode,
-    );
+        averageLabel: averageLabel ?? this.averageLabel,
+        averageLine: averageLine ?? this.averageLine,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        lineColor: lineColor ?? this.lineColor,
+        fillMode: fillMode ?? this.fillMode,
+        fillColor: fillColor ?? this.fillColor);
   }
 }
 
@@ -125,7 +128,6 @@ class _ConfigsWidget extends StatelessWidget {
             ),
           ),
         ),
-        // three radios for FillMode.None, FillMode.below and FillMode.above
         Row(
           children: [
             Container(child: Text('FillMode')),
@@ -152,6 +154,14 @@ class _ConfigsWidget extends StatelessWidget {
               },
             ).toList(),
           ],
+        ),
+        _PickColorButton(
+          title: 'Pick fill color',
+          onChanged: (newColor) => onChanged(
+            (configs) => configs.copyWith(
+              fillColor: newColor,
+            ),
+          ),
         ),
       ],
     );
@@ -218,6 +228,7 @@ class _BodyState extends State<_Body> {
     backgroundColor: null,
     lineColor: Colors.lightBlue,
     fillMode: FillMode.none,
+    fillColor: const Color(0xFF81D4FA),
   );
 
   @override
@@ -273,7 +284,7 @@ class _Graph extends StatelessWidget {
         backgroundColor: _configs.backgroundColor,
         lineColor: _configs.lineColor,
         fillMode: _configs.fillMode,
-        // fillColor: Colors.lightGreen[200]!,
+        fillColor: _configs.fillColor,
         // pointsMode: PointsMode.all,
         // pointSize: 5.0,
         // pointColor: Colors.amber,
