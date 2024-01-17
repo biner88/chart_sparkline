@@ -609,7 +609,7 @@ class _SparklinePainter extends CustomPainter {
             textDirection: TextDirection.ltr);
         avgPaint.layout();
         RRect rect = RRect.fromLTRBR(
-            size.width - avgPaint.width - 10.0,
+            size.width -(enableGridLines==true? avgPaint.width*2:avgPaint.width )- 10.0,
             height / 2 - avgPaint.height / 2,
             width,
             height / 2 + avgPaint.height / 2,
