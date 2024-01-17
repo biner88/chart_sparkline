@@ -142,6 +142,9 @@ class _ConfigsWidget extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
         _PickColorButton(
           title: 'Pick line color',
           color: configs.lineColor,
@@ -291,7 +294,7 @@ class _PickColorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final onPressed = () {
-      final pickerWidget = SizedBox(
+      final pickerWidget = Container(
         width: 600,
         child: ColorPicker(
           color: color ?? Colors.white,
@@ -320,15 +323,11 @@ class _PickColorButton extends StatelessWidget {
 
     return Row(
       children: [
-        ElevatedButton(
-          onPressed: onPressed,
-          child: Text(title),
-        ),
         InkWell(
           onTap: onPressed,
           child: Container(
-            width: 50,
-            height: 50,
+            width: 20,
+            height: 20,
             decoration: BoxDecoration(
               color: color,
               border: Border.all(
@@ -341,9 +340,16 @@ class _PickColorButton extends StatelessWidget {
                         : Colors.white,
                 width: 1,
               ),
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        ElevatedButton(
+          onPressed: onPressed,
+          child: Text(title),
         ),
       ],
     );
@@ -376,24 +382,28 @@ class _BodyState extends State<_Body> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _ConfigsWidget(
-            configs: _configs,
-            onChanged: (value) {
-              setState(() {
-                _configs = value(_configs);
-              });
-            },
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: _ConfigsWidget(
+              configs: _configs,
+              onChanged: (value) {
+                setState(() {
+                  _configs = value(_configs);
+                });
+              },
+            ),
           ),
-        ),
-        Expanded(
-          child: _Graph(
-            configs: _configs,
+          Expanded(
+            child: _Graph(
+              configs: _configs,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

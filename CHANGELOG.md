@@ -1,3 +1,10 @@
+## [1.0.15] - 2024-01-17
+
+* Add maxLine and maxLabel [@adnanjpg](https://github.com/biner88/chart_sparkline/issues/23)
+* Add added macos and web to the example app [@adnanjpg](https://github.com/biner88/chart_sparkline/pull/24)
+* Fix increase the canvas for the average value[@Patiyang](https://github.com/biner88/chart_sparkline/issues/25)
+* Fix gridLineLabelPrecision shows illogical texts [@adnanjpg](https://github.com/biner88/chart_sparkline/issues/20)
+
 ## [1.0.14] - 2023-10-7
 
 * Upgrade flutter SDK 4.0.0

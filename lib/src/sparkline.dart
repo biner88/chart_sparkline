@@ -393,7 +393,7 @@ class _SparklinePainter extends CustomPainter {
 
         String gridLineText = gridLinelabel != null
             ? gridLinelabel!(gridLineValue)
-            : gridLineValue.toStringAsPrecision(gridLineLabelPrecision);
+            : gridLineValue.toStringAsFixed(gridLineLabelPrecision);
 
         gridLineTextPainters.add(TextPainter(
             text: TextSpan(
@@ -594,7 +594,7 @@ class _SparklinePainter extends CustomPainter {
       if (averageLabel) {
         var averageVal = dataPoints.reduce((a, b) => a + b) / dataPoints.length;
         String averageValText =
-            averageVal.toStringAsPrecision(gridLineLabelPrecision);
+            averageVal.toStringAsFixed(gridLineLabelPrecision);
         var avgPaint = TextPainter(
             textAlign: TextAlign.center,
             text: TextSpan(
@@ -609,7 +609,11 @@ class _SparklinePainter extends CustomPainter {
             textDirection: TextDirection.ltr);
         avgPaint.layout();
         RRect rect = RRect.fromLTRBR(
-            size.width -(enableGridLines==true? avgPaint.width*2:avgPaint.width )- 10.0,
+            size.width -
+                (enableGridLines == true
+                    ? avgPaint.width * 2
+                    : avgPaint.width) -
+                10.0,
             height / 2 - avgPaint.height / 2,
             width,
             height / 2 + avgPaint.height / 2,
