@@ -1,3 +1,7 @@
+## [1.0.15+1] - 2024-01-18
+
+* rollback gridLineLabelPrecision shows illogical texts [@adnanjpg](https://github.com/biner88/chart_sparkline/issues/20)
+
 ## [1.0.15] - 2024-01-17
 
 * Add maxLine and maxLabel [@adnanjpg](https://github.com/biner88/chart_sparkline/issues/23)
