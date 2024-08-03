@@ -66,6 +66,7 @@ class Sparkline extends StatelessWidget {
   Sparkline({
     Key? key,
     required this.data,
+    this.label,
     this.lineWidth = 1.0,
     this.lineColor = Colors.lightBlue,
     this.lineGradient,
@@ -109,6 +110,8 @@ class Sparkline extends StatelessWidget {
   ///
   /// The values are normalized to fit within the bounds of the chart.
   final List<double> data;
+
+  final List<String>? label;
 
   /// The width of the sparkline.
   ///
@@ -265,6 +268,7 @@ class Sparkline extends StatelessWidget {
         size: Size.infinite,
         painter: _SparklinePainter(
           data,
+          xLabels: label,
           lineWidth: lineWidth,
           lineColor: lineColor,
           lineGradient: lineGradient,
@@ -305,6 +309,7 @@ class Sparkline extends StatelessWidget {
 class _SparklinePainter extends CustomPainter {
   _SparklinePainter(
     this.dataPoints, {
+    this.xLabels,
     required this.lineWidth,
     required this.lineColor,
     required this.lineGradient,
@@ -344,6 +349,7 @@ class _SparklinePainter extends CustomPainter {
             : (dataPoints.length > 0 ? dataPoints.reduce(math.min) : 0.0);
 
   List<double> dataPoints;
+  List<String>? xLabels;
 
   final double lineWidth;
   final Color lineColor;
@@ -420,6 +426,20 @@ class _SparklinePainter extends CustomPainter {
     }
 
     double width = size.width - lineWidth;
+
+    if (xLabels != null) {
+      var spPainter = TextPainter(
+          text: TextSpan(
+              text: xLabels?[0] ?? "A",
+              style: TextStyle(
+                  color: gridLineColor,
+                  fontSize: 9.0,
+                  fontWeight: FontWeight.bold)),
+          textDirection: TextDirection.ltr);
+      spPainter.layout();
+      size = Size(size.width, size.height - spPainter.height);
+    }
+
     final double height = size.height - lineWidth;
     final double heightNormalizer = (!enableThreshold)
         ? height / ((_max - _min) == 0 ? 1 : (_max - _min))
@@ -507,19 +527,33 @@ class _SparklinePainter extends CustomPainter {
     final Path path = Path();
     path.moveTo(startPoint.dx, startPoint.dy);
 
-    ///xlable
-    // for (int i = 0; i < dataPoints.length; i++) {
-    //   var spPainter = TextPainter(
-    //       text: TextSpan(
-    //           text: '${dataPoints[i]}',
-    //           style: TextStyle(
-    //               color: gridLineColor,
-    //               fontSize: 10.0,
-    //               fontWeight: FontWeight.bold)),
-    //       textDirection: TextDirection.ltr);
-    //   spPainter.layout();
-    //   spPainter.paint(canvas, normalized[i]);
-    // }
+    ///xLabel
+    if (xLabels != null) {
+      for (int i = 0; i < xLabels!.length; i++) {
+        var spPainter = TextPainter(
+            text: TextSpan(
+              text: '${xLabels?[i]}',
+              style: TextStyle(
+                color: Colors.grey.shade800,
+                fontSize: 9.0,
+              ),
+            ),
+            textDirection: TextDirection.ltr);
+        spPainter.layout();
+        var offsetY = height;
+        var offsetX = 0.0;
+        if (i == 0) {
+          offsetX = normalized[i].dx;
+        } else if (i == xLabels!.length - 1) {
+          offsetX = normalized[i].dx - spPainter.width;
+        } else {
+          offsetX = normalized[i].dx - spPainter.width / 2;
+        }
+
+        spPainter.paint(canvas, Offset(offsetX, offsetY + 2));
+      }
+    }
+
     if (useCubicSmoothing) {
       Offset a = normalized[0];
       Offset b = normalized[0];
@@ -765,7 +799,7 @@ class _SparklinePainter extends CustomPainter {
                       text: '${dataPoints[i]}',
                       style: TextStyle(
                           color: gridLineColor,
-                          fontSize: 10.0,
+                          fontSize: 9.0,
                           fontWeight: FontWeight.bold)),
                   textDirection: TextDirection.ltr);
               spPainter.layout();
