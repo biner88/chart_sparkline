@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui show PointMode;
+
 import 'package:flutter/material.dart';
 
 /// Strategy used when filling the area of a sparkline.
@@ -433,6 +434,7 @@ class _SparklinePainter extends CustomPainter {
       'min': {'val': _min, 'offset': Offset(-1, -1)},
       'first': {'val': dataPoints.first, 'offset': Offset(-1, -1)},
       'last': {'val': dataPoints.last, 'offset': Offset(-1, -1)},
+      'all': {'val': 0, 'offset': Offset(-1, -1)},
     };
     if (gridLineTextPainters.isEmpty) {
       update();
@@ -754,6 +756,38 @@ class _SparklinePainter extends CustomPainter {
                   spPainter.paint(canvas, spOffset);
                 }
               }
+            }
+            break;
+          case 'all':
+            for (int i = 0; i < dataPoints.length; i++) {
+              var spPainter = TextPainter(
+                  text: TextSpan(
+                      text: '${dataPoints[i]}',
+                      style: TextStyle(
+                          color: gridLineColor,
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.bold)),
+                  textDirection: TextDirection.ltr);
+              spPainter.layout();
+              var normalizedOffset = normalized[i];
+
+              var offsetY = 0.0;
+              if (spDataPoints['max']['val'] == dataPoints[i]) {
+                offsetY = normalizedOffset.dy + 2;
+              } else {
+                offsetY = normalizedOffset.dy - spPainter.height - 2;
+              }
+              var offsetX = 0.0;
+              if (i == 0) {
+                offsetX = normalizedOffset.dx;
+              } else if (i == dataPoints.length - 1) {
+                offsetX = normalizedOffset.dx - spPainter.width;
+              } else {
+                offsetX = normalizedOffset.dx - spPainter.width / 2;
+              }
+
+              var pointOffset = Offset(offsetX, offsetY);
+              spPainter.paint(canvas, pointOffset);
             }
             break;
           default:
