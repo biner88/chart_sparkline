@@ -806,11 +806,13 @@ class _SparklinePainter extends CustomPainter {
               var normalizedOffset = normalized[i];
 
               var offsetY = 0.0;
-              if (spDataPoints['max']['val'] == dataPoints[i]) {
+              if (normalizedOffset.dy - spPainter.height <= 0) {
                 offsetY = normalizedOffset.dy + 2;
-              } else {
-                offsetY = normalizedOffset.dy - spPainter.height - 2;
               }
+              if (normalizedOffset.dy >= height) {
+                offsetY = height - spPainter.height - 2;
+              }
+
               var offsetX = 0.0;
               if (i == 0) {
                 offsetX = normalizedOffset.dx;
