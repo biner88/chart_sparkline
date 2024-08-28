@@ -6,6 +6,10 @@ Beautiful sparkline charts for Flutter.
 
 ![screenshot](screenshots/sparkline.png)
 
+## Online Demo
+
+[Online Demo](https://biner88.github.io/chart_sparkline/)
+
 ## Installation
 
 Install the latest version [from pub](https://pub.dev/packages/chart_sparkline/install).
@@ -226,6 +230,22 @@ Sparkline(
 ```
 
 ![cubic smoothing example screenshot](screenshots/gridLine.png)
+
+### Animation Line
+
+[Online Demo](https://biner88.github.io/chart_sparkline/)
+
+```dart
+AnimatedBuilder(
+  animation: AnimationController(duration: const Duration(seconds: 1), vsync: this),
+  builder: (context, child) => Sparkline(
+    data: [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0],
+    animationController: _controller,
+    pointsMode: PointsMode.all,
+    pointSize: 8.0,
+  ),
+),
+```
 
 ---
 
