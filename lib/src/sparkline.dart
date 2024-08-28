@@ -69,7 +69,8 @@ class Sparkline extends StatelessWidget {
     required this.data,
     this.animationController,
     this.xLabels = const [],
-    this.xLabelsStyle = const TextStyle(color: Colors.black87, fontSize: 10.0, fontWeight: FontWeight.bold),
+    this.xLabelsStyle = const TextStyle(
+        color: Colors.black87, fontSize: 10.0, fontWeight: FontWeight.bold),
     this.xValueShow = false,
     this.backgroundColor,
     this.lineWidth = 1.0,
@@ -98,7 +99,8 @@ class Sparkline extends StatelessWidget {
     this.gridLineColor = Colors.grey,
     this.gridLineAmount = 5,
     this.gridLineWidth = 0.5,
-    this.gridLineLabelStyle = const TextStyle(color: Colors.grey, fontSize: 10.0, fontWeight: FontWeight.bold),
+    this.gridLineLabelStyle = const TextStyle(
+        color: Colors.grey, fontSize: 10.0, fontWeight: FontWeight.bold),
     this.gridLineLabelFixed = false,
     this.gridLinelabelPrefix = "",
     this.gridLinelabelSuffix = "",
@@ -413,8 +415,12 @@ class _SparklinePainter extends CustomPainter {
     required this.averageLineColor,
     required this.averageLabel,
     required this.backgroundColor,
-  })  : _max = max != null ? max : (dataPoints.isNotEmpty ? dataPoints.reduce(math.max) : 0.0),
-        _min = min != null ? min : (dataPoints.isNotEmpty ? dataPoints.reduce(math.min) : 0.0);
+  })  : _max = max != null
+            ? max
+            : (dataPoints.isNotEmpty ? dataPoints.reduce(math.max) : 0.0),
+        _min = min != null
+            ? min
+            : (dataPoints.isNotEmpty ? dataPoints.reduce(math.min) : 0.0);
 
   List<double> dataPoints;
   final AnimationController? animationController;
@@ -514,7 +520,8 @@ class _SparklinePainter extends CustomPainter {
     final double height = size.height - lineWidth;
     final double heightNormalizer = (!enableThreshold)
         ? height / ((_max - _min) == 0 ? 1 : (_max - _min))
-        : (height - (height * thresholdSize)) / ((_max - _min) == 0 ? 1 : (_max - _min));
+        : (height - (height * thresholdSize)) /
+            ((_max - _min) == 0 ? 1 : (_max - _min));
 
     final List<Offset> points = <Offset>[];
     final List<Offset> normalized = <Offset>[];
@@ -549,10 +556,12 @@ class _SparklinePainter extends CustomPainter {
       // Draw grid lines
       for (int i = 0; i < gridLineAmount; i++) {
         gridLineY = (gridLineDist * i).round().toDouble();
-        canvas.drawLine(Offset(0.0, gridLineY), Offset(width, gridLineY), gridPaint);
+        canvas.drawLine(
+            Offset(0.0, gridLineY), Offset(width, gridLineY), gridPaint);
 
         // Label grid lines
-        gridLineTextPainters[i].paint(canvas, Offset(width + 2.0, gridLineY - 6.0));
+        gridLineTextPainters[i]
+            .paint(canvas, Offset(width + 2.0, gridLineY - 6.0));
       }
     }
 
@@ -688,7 +697,8 @@ class _SparklinePainter extends CustomPainter {
 
       for (int i = 0; i <= (width / 6.0); ++i) {
         double dx = 6.0 * i;
-        canvas.drawLine(Offset(dx, height / 2), Offset(dx, height / 2 + 1), paint1);
+        canvas.drawLine(
+            Offset(dx, height / 2), Offset(dx, height / 2 + 1), paint1);
       }
       if (averageLabel) {
         var averageVal = dataPoints.reduce((a, b) => a + b) / dataPoints.length;
@@ -708,14 +718,21 @@ class _SparklinePainter extends CustomPainter {
             ),
             textDirection: TextDirection.ltr);
         avgPaint.layout();
-        RRect rect = RRect.fromLTRBR(size.width - (gridLinesEnable ? avgPaint.width * 2 : avgPaint.width) - 10.0,
-            height / 2 - avgPaint.height / 2, width, height / 2 + avgPaint.height / 2, Radius.circular(1.0));
+        RRect rect = RRect.fromLTRBR(
+            size.width -
+                (gridLinesEnable ? avgPaint.width * 2 : avgPaint.width) -
+                10.0,
+            height / 2 - avgPaint.height / 2,
+            width,
+            height / 2 + avgPaint.height / 2,
+            Radius.circular(1.0));
         var paint = Paint()
           ..style = PaintingStyle.fill
           ..color = gridLineColor;
         canvas.drawRRect(rect, paint);
         //
-        avgPaint.paint(canvas, Offset(width - avgPaint.width - 5.0, height / 2 - 5.0));
+        avgPaint.paint(
+            canvas, Offset(width - avgPaint.width - 5.0, height / 2 - 5.0));
       }
     }
 
@@ -756,8 +773,12 @@ class _SparklinePainter extends CustomPainter {
           textDirection: TextDirection.ltr);
       maxPaint.layout();
       final hgh = maxDy;
-      RRect rect = RRect.fromLTRBR(size.width - maxPaint.width - 10.0, hgh - maxPaint.height / 2, width,
-          hgh + maxPaint.height / 2, Radius.circular(1.0));
+      RRect rect = RRect.fromLTRBR(
+          size.width - maxPaint.width - 10.0,
+          hgh - maxPaint.height / 2,
+          width,
+          hgh + maxPaint.height / 2,
+          Radius.circular(1.0));
       var paint = Paint()
         ..style = PaintingStyle.fill
         ..color = gridLineColor;
@@ -772,14 +793,18 @@ class _SparklinePainter extends CustomPainter {
         var spPainter = TextPainter(
             text: TextSpan(
                 text: val.toString(),
-                style: TextStyle(color: gridLineColor, fontSize: 10.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    color: gridLineColor,
+                    fontSize: 10.0,
+                    fontWeight: FontWeight.bold)),
             textDirection: TextDirection.ltr);
         spPainter.layout();
         var spOffset = spDataPoints[item]['offset'];
 
         switch (item) {
           case 'last':
-            spOffset = Offset(width - spPainter.width - 6, spOffset.dy - spPainter.height / 2);
+            spOffset = Offset(width - spPainter.width - 6,
+                spOffset.dy - spPainter.height / 2);
 
             spPainter.paint(canvas, spOffset);
             break;
@@ -789,11 +814,13 @@ class _SparklinePainter extends CustomPainter {
             break;
           case 'max':
             if ((spOffset != Offset(-1, -1))) {
-              spOffset = Offset(spOffset.dx - spPainter.width / 2, spOffset.dy + 6);
+              spOffset =
+                  Offset(spOffset.dx - spPainter.width / 2, spOffset.dy + 6);
               spPainter.paint(canvas, spOffset);
             } else {
               if (!kLine!.contains('first')) {
-                if (spDataPoints['max']['val'] == spDataPoints['first']['val']) {
+                if (spDataPoints['max']['val'] ==
+                    spDataPoints['first']['val']) {
                   spOffset = spDataPoints['first']['offset'];
                   spOffset = Offset(6.0, spOffset.dy - spPainter.height / 2);
                   spPainter.paint(canvas, spOffset);
@@ -802,7 +829,8 @@ class _SparklinePainter extends CustomPainter {
               if (!kLine!.contains('last')) {
                 if (spDataPoints['max']['val'] == spDataPoints['last']['val']) {
                   spOffset = spDataPoints['last']['offset'];
-                  spOffset = Offset(width - spPainter.width - 6, spOffset.dy - spPainter.height / 2);
+                  spOffset = Offset(width - spPainter.width - 6,
+                      spOffset.dy - spPainter.height / 2);
                   spPainter.paint(canvas, spOffset);
                 }
               }
@@ -810,11 +838,13 @@ class _SparklinePainter extends CustomPainter {
             break;
           case 'min':
             if ((spOffset != Offset(-1, -1))) {
-              spOffset = Offset(spOffset.dx - spPainter.width / 2, spOffset.dy - 18);
+              spOffset =
+                  Offset(spOffset.dx - spPainter.width / 2, spOffset.dy - 18);
               spPainter.paint(canvas, spOffset);
             } else {
               if (!kLine!.contains('first')) {
-                if (spDataPoints['min']['val'] == spDataPoints['first']['val']) {
+                if (spDataPoints['min']['val'] ==
+                    spDataPoints['first']['val']) {
                   spOffset = spDataPoints['first']['offset'];
                   spOffset = Offset(6.0, spOffset.dy - spPainter.height / 2);
                   spPainter.paint(canvas, spOffset);
@@ -823,7 +853,8 @@ class _SparklinePainter extends CustomPainter {
               if (!kLine!.contains('last')) {
                 if (spDataPoints['min']['val'] == spDataPoints['last']['val']) {
                   spOffset = spDataPoints['last']['offset'];
-                  spOffset = Offset(width - spPainter.width - 6, spOffset.dy - spPainter.height / 2);
+                  spOffset = Offset(width - spPainter.width - 6,
+                      spOffset.dy - spPainter.height / 2);
                   spPainter.paint(canvas, spOffset);
                 }
               }
@@ -838,7 +869,10 @@ class _SparklinePainter extends CustomPainter {
         var spPainter = TextPainter(
             text: TextSpan(
                 text: '${dataPoints[i]}',
-                style: TextStyle(color: gridLineColor, fontSize: 9.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    color: gridLineColor,
+                    fontSize: 9.0,
+                    fontWeight: FontWeight.bold)),
             textDirection: TextDirection.ltr);
         spPainter.layout();
         var normalizedOffset = normalized[i];
@@ -868,7 +902,8 @@ class _SparklinePainter extends CustomPainter {
     if (animationController != null) {
       PathMetrics pathMetrics = path.computeMetrics();
       PathMetric pathMetric = pathMetrics.elementAt(0);
-      Path extracted = pathMetric.extractPath(0.0, pathMetric.length * animationController!.value);
+      Path extracted = pathMetric.extractPath(
+          0.0, pathMetric.length * animationController!.value);
       canvas.drawPath(extracted, paint);
     } else {
       canvas.drawPath(path, paint);

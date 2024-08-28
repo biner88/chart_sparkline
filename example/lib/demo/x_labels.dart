@@ -34,7 +34,19 @@ Sparkline(
       widget: Sparkline(
         data: [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0],
         xValueShow: true,
-        xLabels: ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10', 'x11'],
+        xLabels: [
+          'x1',
+          'x2',
+          'x3',
+          'x4',
+          'x5',
+          'x6',
+          'x7',
+          'x8',
+          'x9',
+          'x10',
+          'x11'
+        ],
         gridLinelabelPrefix: '\$ ',
         gridLinelabelSuffix: 'M',
         gridLineLabelPrecision: 3,

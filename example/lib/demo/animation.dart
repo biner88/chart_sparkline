@@ -9,12 +9,14 @@ class AnimationChart extends StatefulWidget {
   State<AnimationChart> createState() => _AnimationChartState();
 }
 
-class _AnimationChartState extends State<AnimationChart> with SingleTickerProviderStateMixin {
+class _AnimationChartState extends State<AnimationChart>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    _controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     _controller.forward();
   }
 
