@@ -13,12 +13,14 @@ class AverageLine extends StatelessWidget {
 Sparkline(
   data: [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0],
   averageLine: true,
+  averageLineColor: Colors.red,
   averageLabel: true,
 ),
 ''',
       widget: Sparkline(
         data: [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0],
         averageLine: true,
+        averageLineColor: Colors.red,
         averageLabel: true,
       ),
     );

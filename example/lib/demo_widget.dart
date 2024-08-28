@@ -17,6 +17,7 @@ class DemoWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(bottom: 10),
             child: Text(
               title,
@@ -40,16 +41,17 @@ class DemoWidget extends StatelessWidget {
                 ),
                 child: widget,
               ),
-              Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.only(left: 15),
-                height: 170.0,
-                width: 400.0,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(left: 15),
+                  height: 170.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: SelectableText(code),
                 ),
-                child: SelectableText(code),
               ),
             ],
           ),

@@ -1,6 +1,15 @@
 ## [1.0.16]- 2024-08-27
 
-* Add kline parameter all & x-axis [@clong1995](https://github.com/biner88/chart_sparkline/pull/26)
+* Add xLabels
+* Add xLabelsStyle
+* Add xValueShow
+* Add gridLineLabelStyle
+* Add gridLineLabelFixed
+* Add gridLinelabelSuffix
+* Add averageLineColor
+* Deprecated gridLineLabelColor, Use gridLineLabelStyle instead. 
+* Deprecated enableGridLines, Use gridLinesEnable instead. 
+* Update example and README
 
 ## [1.0.15+1] - 2024-01-18
 

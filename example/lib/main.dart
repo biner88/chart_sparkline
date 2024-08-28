@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:chart_sparkline_example/demo/x_labels.dart';
+import 'package:chart_sparkline_example/demo/max_line.dart';
 import 'package:chart_sparkline_example/demo/all_points.dart';
 import 'package:chart_sparkline_example/demo/average_line.dart';
 import 'package:chart_sparkline_example/demo/fill_above.dart';
@@ -20,25 +22,18 @@ void main() {
         body: ListView(
           children: [
             QuickStart(),
-            Divider(),
+            XLabels(),
+            // TestX(),
+            MaxLine(),
             Lineopts(),
-            Divider(),
             Points(),
-            Divider(),
             AllPoints(),
-            Divider(),
             FillBelow(),
-            Divider(),
             FillAbove(),
-            Divider(),
             Smoothing(),
-            Divider(),
             AverageLine(),
-            Divider(),
             Kline(),
-            Divider(),
             GridLine(),
-            Divider(),
             ThresholdX(),
           ],
         ),
