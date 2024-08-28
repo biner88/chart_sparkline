@@ -11,10 +11,11 @@ class AllPoints extends StatelessWidget {
       title: 'All Points',
       code: '''
 Sparkline(
-  data: data,
+  data: [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0],
   pointsMode: PointsMode.all,
-  pointSize: 4.0,
-  pointColor: Colors.red,
+  pointSize: 8.0,
+  pointColor: Colors.amber,
+  pointsShape: StrokeCap.square,
 ),
 ''',
       widget: Sparkline(
@@ -22,6 +23,7 @@ Sparkline(
         pointsMode: PointsMode.all,
         pointSize: 8.0,
         pointColor: Colors.amber,
+        pointsShape: StrokeCap.square,
       ),
     );
   }

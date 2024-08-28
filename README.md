@@ -239,9 +239,9 @@ Sparkline(
 * [x] embiggen individual points/change color
 * [x] different points modes [all/last/none]
 * [ ] animate between two sparklines
-* [ ] animate drawing a single sparkline
+* [x] animate drawing a single sparkline
 * [ ] gesture detector to select closest point to tap
-* [ ] baseline
+* [x] baseline
 * [x] different fill modes [above/below/none]
 * [x] fix edge points overflowing by offsetting by lineWidth
 * [x] better corner rounding

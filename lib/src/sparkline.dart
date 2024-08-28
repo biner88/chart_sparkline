@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui show PointMode;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -66,18 +67,20 @@ class Sparkline extends StatelessWidget {
   Sparkline({
     Key? key,
     required this.data,
+    this.animationController,
     this.xLabels = const [],
     this.xLabelsStyle = const TextStyle(color: Colors.black87, fontSize: 10.0, fontWeight: FontWeight.bold),
     this.xValueShow = false,
     this.backgroundColor,
     this.lineWidth = 1.0,
-    this.lineColor = Colors.lightBlue,
+    this.lineColor = Colors.blue,
     this.lineGradient,
     // point
     this.pointsMode = PointsMode.none,
     this.pointIndex,
     this.pointSize = 4.0,
     this.pointColor = const Color(0xFF0277BD),
+    this.pointsShape = StrokeCap.round,
     this.sharpCorners = false,
     // Smoothing
     this.useCubicSmoothing = false,
@@ -144,6 +147,10 @@ class Sparkline extends StatelessWidget {
   ///
   /// Defaults to [PointsMode.none].
   final PointsMode pointsMode;
+
+  /// The shape of the points.
+  /// defaults to [StrokeCap.round]
+  final StrokeCap pointsShape;
 
   /// The index to draw a point at when pointsMode is atIndex.
   ///
@@ -297,6 +304,9 @@ class Sparkline extends StatelessWidget {
   /// xValueShow
   final bool xValueShow;
 
+  /// animationController
+  final AnimationController? animationController;
+
   @override
   Widget build(BuildContext context) {
     return LimitedBox(
@@ -306,22 +316,30 @@ class Sparkline extends StatelessWidget {
         size: Size.infinite,
         painter: _SparklinePainter(
           data,
+          animationController: animationController,
+          backgroundColor: backgroundColor,
           xLabels: xLabels,
           xLabelsStyle: xLabelsStyle,
           xValueShow: xValueShow,
+          //
           lineWidth: lineWidth,
           lineColor: lineColor,
           lineGradient: lineGradient,
           sharpCorners: sharpCorners,
+          //
           useCubicSmoothing: useCubicSmoothing,
           cubicSmoothingFactor: cubicSmoothingFactor,
+          //
           fillMode: fillMode,
           fillColor: fillColor,
           fillGradient: fillGradient,
+          //
           pointsMode: pointsMode,
           pointIndex: pointIndex,
           pointSize: pointSize,
           pointColor: pointColor,
+          pointsShape: pointsShape,
+          //
           gridLinesEnable: gridLinesEnable,
           gridLinelabel: gridLinelabel,
           gridLineColor: gridLineColor,
@@ -332,17 +350,21 @@ class Sparkline extends StatelessWidget {
           gridLinelabelSuffix: gridLinelabelSuffix,
           gridLineLabelFixed: gridLineLabelFixed,
           gridLineLabelPrecision: gridLineLabelPrecision,
+          //
           enableThreshold: enableThreshold,
           thresholdSize: thresholdSize,
+          //
           max: max,
           min: min,
+          //
           averageLine: averageLine,
           averageLineColor: averageLineColor,
           averageLabel: averageLabel,
+          //
           maxLine: maxLine,
           maxLabel: maxLabel,
+          //
           kLine: kLine,
-          backgroundColor: backgroundColor,
         ),
       ),
     );
@@ -352,6 +374,7 @@ class Sparkline extends StatelessWidget {
 class _SparklinePainter extends CustomPainter {
   _SparklinePainter(
     this.dataPoints, {
+    this.animationController,
     required this.xLabels,
     required this.xLabelsStyle,
     required this.xValueShow,
@@ -368,6 +391,7 @@ class _SparklinePainter extends CustomPainter {
     required this.pointIndex,
     required this.pointSize,
     required this.pointColor,
+    required this.pointsShape,
     required this.enableThreshold,
     required this.thresholdSize,
     required this.gridLinesEnable,
@@ -393,6 +417,7 @@ class _SparklinePainter extends CustomPainter {
         _min = min != null ? min : (dataPoints.isNotEmpty ? dataPoints.reduce(math.min) : 0.0);
 
   List<double> dataPoints;
+  final AnimationController? animationController;
   final List<String> xLabels;
   final TextStyle xLabelsStyle;
   final bool xValueShow;
@@ -412,6 +437,7 @@ class _SparklinePainter extends CustomPainter {
   final int? pointIndex;
   final double pointSize;
   final Color pointColor;
+  final StrokeCap pointsShape;
 
   final bool enableThreshold;
   final double thresholdSize;
@@ -616,7 +642,7 @@ class _SparklinePainter extends CustomPainter {
     Paint paint = Paint()
       ..strokeWidth = lineWidth
       ..color = lineColor
-      ..strokeCap = StrokeCap.round
+      ..strokeCap = pointsShape
       ..strokeJoin = sharpCorners ? StrokeJoin.miter : StrokeJoin.round
       ..style = PaintingStyle.stroke;
     if (lineGradient != null) {
@@ -839,11 +865,18 @@ class _SparklinePainter extends CustomPainter {
       }
     }
 
-    canvas.drawPath(path, paint);
+    if (animationController != null) {
+      PathMetrics pathMetrics = path.computeMetrics();
+      PathMetric pathMetric = pathMetrics.elementAt(0);
+      Path extracted = pathMetric.extractPath(0.0, pathMetric.length * animationController!.value);
+      canvas.drawPath(extracted, paint);
+    } else {
+      canvas.drawPath(path, paint);
+    }
 
     if (points.isNotEmpty) {
       Paint pointsPaint = Paint()
-        ..strokeCap = StrokeCap.round
+        ..strokeCap = pointsShape
         ..strokeWidth = pointSize
         ..color = pointColor;
       canvas.drawPoints(ui.PointMode.points, points, pointsPaint);
@@ -852,38 +885,6 @@ class _SparklinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_SparklinePainter old) {
-    return dataPoints != old.dataPoints ||
-        lineWidth != old.lineWidth ||
-        lineColor != old.lineColor ||
-        lineGradient != old.lineGradient ||
-        sharpCorners != old.sharpCorners ||
-        fillMode != old.fillMode ||
-        fillColor != old.fillColor ||
-        fillGradient != old.fillGradient ||
-        pointsMode != old.pointsMode ||
-        pointIndex != old.pointIndex ||
-        pointSize != old.pointSize ||
-        pointColor != old.pointColor ||
-        gridLinesEnable != old.gridLinesEnable ||
-        enableThreshold != old.enableThreshold ||
-        thresholdSize != old.thresholdSize ||
-        gridLineColor != old.gridLineColor ||
-        gridLineAmount != old.gridLineAmount ||
-        gridLineWidth != old.gridLineWidth ||
-        gridLineLabelStyle != old.gridLineLabelStyle ||
-        gridLinelabelPrefix != old.gridLinelabelPrefix ||
-        gridLinelabelSuffix != old.gridLinelabelSuffix ||
-        gridLineLabelPrecision != old.gridLineLabelPrecision ||
-        gridLineLabelFixed != old.gridLineLabelFixed ||
-        averageLine != old.averageLine ||
-        averageLabel != old.averageLabel ||
-        maxLine != old.maxLine ||
-        maxLabel != old.maxLabel ||
-        kLine != old.kLine ||
-        xLabels != old.xLabels ||
-        xLabelsStyle != old.xLabelsStyle ||
-        xValueShow != old.xValueShow ||
-        backgroundColor != old.backgroundColor ||
-        useCubicSmoothing != old.useCubicSmoothing;
+    return old != this;
   }
 }

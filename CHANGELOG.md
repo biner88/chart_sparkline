@@ -7,6 +7,8 @@
 * Add gridLineLabelFixed
 * Add gridLinelabelSuffix
 * Add averageLineColor
+* Add pointsShape
+* Add animation line
 * Deprecated gridLineLabelColor, Use gridLineLabelStyle instead. 
 * Deprecated enableGridLines, Use gridLinesEnable instead. 
 * Update example and README

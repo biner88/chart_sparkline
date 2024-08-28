@@ -1,3 +1,4 @@
+import 'package:chart_sparkline_example/demo/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:chart_sparkline_example/demo/x_labels.dart';
 import 'package:chart_sparkline_example/demo/max_line.dart';
@@ -22,8 +23,8 @@ void main() {
         body: ListView(
           children: [
             QuickStart(),
+            AnimationChart(),
             XLabels(),
-            // TestX(),
             MaxLine(),
             Lineopts(),
             Points(),
