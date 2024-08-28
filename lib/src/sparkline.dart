@@ -94,6 +94,7 @@ class Sparkline extends StatelessWidget {
     this.max,
     this.min,
     this.gridLinelabelPrefix = "",
+    this.gridLinelabelSuffix = "",
     this.gridLineLabelPrecision = 3,
     this.averageLine = false,
     this.averageLabel = true,
@@ -224,6 +225,10 @@ class Sparkline extends StatelessWidget {
   // final String labelPrefix;
   final String gridLinelabelPrefix;
 
+  /// Symbol suffix for grid line labels
+  // final String labelSuffix;
+  final String gridLinelabelSuffix;
+
   /// Digit precision of grid line labels
   final int gridLineLabelPrecision;
 
@@ -241,7 +246,7 @@ class Sparkline extends StatelessWidget {
   /// value in [data].
   final double? min;
 
-  /// kLine= ['max', 'min', 'first', 'last']
+  /// kLine= ['max', 'min', 'first', 'last', 'all']
   final List? kLine;
 
   ///average Line
@@ -289,6 +294,7 @@ class Sparkline extends StatelessWidget {
           gridLineLabelColor: gridLineLabelColor,
           gridLineWidth: gridLineWidth,
           gridLinelabelPrefix: gridLinelabelPrefix,
+          gridLinelabelSuffix: gridLinelabelSuffix,
           gridLineLabelPrecision: gridLineLabelPrecision,
           enableThreshold: enableThreshold,
           thresholdSize: thresholdSize,
@@ -331,6 +337,7 @@ class _SparklinePainter extends CustomPainter {
     required this.enableThreshold,
     required this.thresholdSize,
     this.gridLinelabelPrefix = '',
+    this.gridLinelabelSuffix = '',
     this.gridLineLabelPrecision = 3,
     this.gridLinelabel,
     double? max,
@@ -377,6 +384,7 @@ class _SparklinePainter extends CustomPainter {
   final double gridLineWidth;
   final Color gridLineLabelColor;
   final String gridLinelabelPrefix;
+  final String gridLinelabelSuffix;
   final int gridLineLabelPrecision;
   final bool averageLine;
   final bool averageLabel;
@@ -401,7 +409,7 @@ class _SparklinePainter extends CustomPainter {
         gridLineTextPainters.add(TextPainter(
             text: TextSpan(
                 // text: labelPrefix + gridLineText,
-                text: gridLinelabelPrefix + gridLineText,
+                text: gridLinelabelPrefix + gridLineText + gridLinelabelSuffix,
                 style: TextStyle(color: gridLineLabelColor, fontSize: 10.0, fontWeight: FontWeight.bold)),
             textDirection: TextDirection.ltr));
         gridLineTextPainters[i].layout();
@@ -619,7 +627,7 @@ class _SparklinePainter extends CustomPainter {
         var avgPaint = TextPainter(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: gridLinelabelPrefix + averageValText,
+              text: gridLinelabelPrefix + averageValText + gridLinelabelSuffix,
               style: TextStyle(
                 textBaseline: TextBaseline.alphabetic,
                 // height: 1.1,
@@ -671,7 +679,7 @@ class _SparklinePainter extends CustomPainter {
         var maxPaint = TextPainter(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: gridLinelabelPrefix + maxValText,
+              text: gridLinelabelPrefix + maxValText + gridLinelabelSuffix,
               style: TextStyle(
                 textBaseline: TextBaseline.alphabetic,
                 // height: 1.1,
@@ -825,6 +833,7 @@ class _SparklinePainter extends CustomPainter {
         enableThreshold != old.enableThreshold ||
         thresholdSize != old.thresholdSize ||
         gridLinelabelPrefix != old.gridLinelabelPrefix ||
+        gridLinelabelSuffix != old.gridLinelabelSuffix ||
         gridLineLabelPrecision != old.gridLineLabelPrecision ||
         averageLine != old.averageLine ||
         averageLabel != old.averageLabel ||
