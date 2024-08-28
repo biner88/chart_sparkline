@@ -491,7 +491,7 @@ class _SparklinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (dataPoints.length == 0) {
+    if (dataPoints.isEmpty) {
       dataPoints = [0.0, 0.0];
     }
     if (dataPoints.length == 1) {
@@ -766,7 +766,7 @@ class _SparklinePainter extends CustomPainter {
       maxPaint.paint(canvas, Offset(width - maxPaint.width - 5.0, maxDy - 5.0));
     }
 
-    if (kLine != null && kLine!.length > 0) {
+    if (kLine != null && kLine!.isNotEmpty) {
       for (var item in kLine!) {
         var val = spDataPoints[item]['val'];
         var spPainter = TextPainter(

@@ -1,4 +1,4 @@
-## [1.0.16]- 2024-08-27
+## [1.1.0]- 2024-08-27
 
 * Add xLabels
 * Add xLabelsStyle
