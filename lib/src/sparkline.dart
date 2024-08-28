@@ -102,6 +102,7 @@ class Sparkline extends StatelessWidget {
     this.maxLabel = true,
     this.kLine,
     this.backgroundColor,
+    this.gridLineLabelFixed = false,
   }) : super(key: key);
 
   /// List of values to be represented by the sparkline.
@@ -264,6 +265,10 @@ class Sparkline extends StatelessWidget {
   ///backgroudColor
   final Color? backgroundColor;
 
+  ///gridLineLabelFixed
+  ///use toStringAsFixed format gridLineLabel
+  final bool gridLineLabelFixed;
+
   @override
   Widget build(BuildContext context) {
     return LimitedBox(
@@ -306,6 +311,7 @@ class Sparkline extends StatelessWidget {
           backgroundColor: backgroundColor,
           averageLabel: averageLabel,
           maxLabel: maxLabel,
+          gridLineLabelFixed: gridLineLabelFixed,
         ),
       ),
     );
@@ -348,6 +354,7 @@ class _SparklinePainter extends CustomPainter {
     this.averageLabel = true,
     this.maxLabel = true,
     this.backgroundColor,
+    this.gridLineLabelFixed = false,
   })  : _max = max != null ? max : (dataPoints.isNotEmpty ? dataPoints.reduce(math.max) : 0.0),
         _min = min != null ? min : (dataPoints.isNotEmpty ? dataPoints.reduce(math.min) : 0.0);
 
@@ -392,6 +399,7 @@ class _SparklinePainter extends CustomPainter {
   final bool maxLabel;
   final List? kLine;
   final Color? backgroundColor;
+  final bool gridLineLabelFixed;
 
   List<TextPainter> gridLineTextPainters = [];
 
@@ -404,7 +412,9 @@ class _SparklinePainter extends CustomPainter {
 
         String gridLineText = gridLinelabel != null
             ? gridLinelabel!(gridLineValue)
-            : gridLineValue.toStringAsPrecision(gridLineLabelPrecision);
+            : (gridLineLabelFixed
+                ? gridLineValue.toStringAsFixed(gridLineLabelPrecision)
+                : gridLineValue.toStringAsPrecision(gridLineLabelPrecision));
 
         gridLineTextPainters.add(TextPainter(
             text: TextSpan(
@@ -623,7 +633,9 @@ class _SparklinePainter extends CustomPainter {
       }
       if (averageLabel) {
         var averageVal = dataPoints.reduce((a, b) => a + b) / dataPoints.length;
-        String averageValText = averageVal.toStringAsPrecision(gridLineLabelPrecision);
+        String averageValText = gridLineLabelFixed
+            ? averageVal.toStringAsFixed(gridLineLabelPrecision)
+            : averageVal.toStringAsPrecision(gridLineLabelPrecision);
         var avgPaint = TextPainter(
             textAlign: TextAlign.center,
             text: TextSpan(
@@ -675,7 +687,9 @@ class _SparklinePainter extends CustomPainter {
         );
       }
       if (maxLabel) {
-        String maxValText = maxVal.toStringAsPrecision(gridLineLabelPrecision);
+        String maxValText = gridLineLabelFixed
+            ? maxVal.toStringAsFixed(gridLineLabelPrecision)
+            : maxVal.toStringAsPrecision(gridLineLabelPrecision);
         var maxPaint = TextPainter(
             textAlign: TextAlign.center,
             text: TextSpan(
@@ -826,15 +840,16 @@ class _SparklinePainter extends CustomPainter {
         pointSize != old.pointSize ||
         pointColor != old.pointColor ||
         enableGridLines != old.enableGridLines ||
+        enableThreshold != old.enableThreshold ||
+        thresholdSize != old.thresholdSize ||
         gridLineColor != old.gridLineColor ||
         gridLineAmount != old.gridLineAmount ||
         gridLineWidth != old.gridLineWidth ||
         gridLineLabelColor != old.gridLineLabelColor ||
-        enableThreshold != old.enableThreshold ||
-        thresholdSize != old.thresholdSize ||
         gridLinelabelPrefix != old.gridLinelabelPrefix ||
         gridLinelabelSuffix != old.gridLinelabelSuffix ||
         gridLineLabelPrecision != old.gridLineLabelPrecision ||
+        gridLineLabelFixed != old.gridLineLabelFixed ||
         averageLine != old.averageLine ||
         averageLabel != old.averageLabel ||
         maxLine != old.maxLine ||
