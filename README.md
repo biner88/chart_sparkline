@@ -128,7 +128,6 @@ Sparkline(
 );
 ```
 
-
 ---
 
 ### Fill
@@ -216,7 +215,7 @@ Sparkline(
 
 ![cubic smoothing example screenshot](screenshots/high_low_first_last.png)
 
-### gridLine
+### Grid Line
 
 ```dart
 Sparkline(
