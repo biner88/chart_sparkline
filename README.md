@@ -269,4 +269,3 @@ AnimatedBuilder(
 * [x] gradient shader on line paint
 * [x] gradient shader on fill paint
 * [ ] multiple overlapping sparklines on a shared axis
-* [ ] tests

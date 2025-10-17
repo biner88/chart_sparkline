@@ -1,3 +1,7 @@
+## [1.1.2]- 2025-10-17
+
+* Stable operation for more than one year. 🚬
+
 ## [1.1.1]- 2024-08-27
 
 * Add xLabels
